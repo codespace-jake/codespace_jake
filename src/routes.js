@@ -29,6 +29,16 @@ const ADMIN_USER = "/user";
 // ADMIN SAMPLE(CRUD용)
 const ADMIN_SAMPLE = "/sample";
 
+//Product (새로 생성)
+const PRODUCT = "/product";
+const PRODUCT_REGISTER = "/register";
+const PRODUCT_LOGIN = "/login";
+const PRODUCT_LOGOUT = "/logout";
+const PRODUCT_CHANGE_PW = "/change-pw";
+const PRODUCT_USER = "/user";
+// PRODUCT SAMPLE(CRUD용)
+const PRODUCT_SAMPLE = "/sample";
+
 // API
 const API = "/api";
 
@@ -63,6 +73,16 @@ const routes = {
   adminUser: ADMIN_USER,
   // ADMIN SAMPLE(CRUD용)
   adminSample: ADMIN_SAMPLE,
+
+  // Product
+  product: PRODUCT,
+  productRegister: PRODUCT_REGISTER,
+  productLogin: PRODUCT_LOGIN,
+  productLogout: PRODUCT_LOGOUT,
+  productChangePW: PRODUCT_CHANGE_PW,
+  productUser: PRODUCT_USER,
+  // Product SAMPLE(CRUD용)
+  productSample: PRODUCT_SAMPLE,
 
   // API
   api: API,
