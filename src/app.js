@@ -13,11 +13,11 @@ import csp from "./csp";
 import routes from "./routes";
 import globalRouter from "./routers/globalRouter";
 import userRouter from "./routers/userRouter";
-import adminRouter from "./routers/adminRouter";
 import apiRouter from "./routers/apiRouter";
-import authRouter from "./routers/authRouter";
+// import authRouter from "./routers/authRouter";
 import { localsMiddleware } from "./middlewares";
 import "./passport";
+import productRouter from "./routers/productRouter";
 
 const app = express();
 
@@ -62,9 +62,8 @@ app.use(localsMiddleware);
 
 app.use(routes.home, globalRouter);
 app.use(routes.user, userRouter);
-app.use(routes.admin, adminRouter);
+app.use(routes.product, productRouter);
 app.use(routes.api, apiRouter);
-// app.use(routes.auth, authRouter);
 app.use((_, res) => {
   // 404 처리 부분
   res.status(404).render("error/404");
