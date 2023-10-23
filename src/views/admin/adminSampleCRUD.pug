@@ -1,0 +1,160 @@
+extends ../layouts/adminMain
+
+block content
+  body
+    main.admin__main
+      if crudType === "create" || crudType === "update"
+        //- FIXME: 페이지에 맞게 id 수정
+        .admin__form-page#admin__sampleForm-page
+          .layout-wrapper.layout-content-navbar
+            .layout-container
+              //- BEGIN: Sidebar menu
+              include adminSidebar
+              //- END: Sidebar menu
+              //- BEGIN: Layout container
+              .layout-page
+                //- BEGIN: Navbar
+                include adminNavbar
+                //- END: Navbar
+                //- BEGIN: Content wrapper
+                .content-wrapper
+                  //- BEGIN: Content
+                  .container-xxl.flex-grow-1.container-p-y
+                    h4.fw-bold.py-3.mb-3.admin__page-title=`${adminNameKo} ${updateBool ? "수정" : "등록"}`
+                    .row
+                      .col-12.col-lg-7
+                        .card
+                          .card-body
+                            form.browser-default-validation.admin__form(enctype="multipart/form-data" method="POST")
+                              input(type="hidden" name="itemID" value=`${updateBool ? adminItem._id : ""}` readonly required)
+                              .col-12
+                                h5.fw-semibold 1. 이미지 등록 영역
+                                hr.mt-0
+                              .mb-2
+                                label.form-label.fw-bold(for="thumbnail-img") 썸네일 이미지
+                                label.form-label.text-danger.fw-bold &nbsp;&nbsp;[권장 사이즈: 1682px * 1122px]
+                                if updateBool
+                                  h6.text-success.mb-2.fw-bold.guide__heading 선택하지 않으면 이전 데이터로 유지합니다.&nbsp;
+                                    a.text-success(href=adminItem.thumbnail target="_blank") [이전 이미지 보기]
+                                  input#thumbnail-img.form-control(type="file" name="thumbnail")
+                                else
+                                  input#thumbnail-img.form-control(type="file" name="thumbnail" required)
+                              .col-12.mt-5
+                                h5.fw-semibold 2. 데이터 등록 영역
+                                hr.mt-0
+                              .mb-2
+                                label.form-label.fw-bold(for='#data1') 데이터1
+                                input#data1.form-control(type='text' name="data1" value=`${updateBool ? adminItem.data1 : ""}` placeholder="데이터1을 입력하세요" required)
+                              .mb-2
+                                label.form-label.fw-bold(for='#data2') 데이터2
+                                input#data2.form-control(type='text' name="data2" value=`${updateBool ? adminItem.data2 : ""}` placeholder="데이터2를 입력하세요" required)
+                              .mb-2
+                                label.form-label.fw-bold(for='#data3') 데이터3
+                                label.form-label.text-danger.fw-bold &nbsp;&nbsp;[숫자만 입력 가능합니다 가이드 문구가 들어가는 영역입니다]
+                                input#data3.form-control(type='number' name="data3" value=`${updateBool ? adminItem.data3 : ""}` placeholder="데이터3을 입력하세요" required)
+                              .mb-2
+                                label.form-label.fw-bold(for='#data4') 데이터4
+                                label.form-label.text-danger.fw-bold &nbsp;&nbsp;[샘플의 가격으로 숫자만 입력 가능합니다]
+                                input#data4.form-control(type='number' name="data4" value=`${updateBool ? adminItem.data4 : ""}` placeholder="데이터4를 입력하세요" required)
+                              .mb-2
+                                label.form-label.fw-bold(for='#data5') 데이터5
+                                textarea#data5.form-control(type='text' name="data5" placeholder="데이터5를 입력하세요" rows="3" required)=`${updateBool ? adminItem.data5 : ""}`
+                              .col-12.mt-5
+                                h5.fw-semibold 3. 기타 다양한 샘플 코드 영역
+                                hr.mt-0
+                              .mb-2
+                                label.form-label.fw-bold(for='userObjectID') 관리자 유저 아이디 [객체]
+                                select#userObjectID.form-select(name="userID" required)
+                                  each user in users
+                                    if updateBool && String(user._id) === String(adminItem.userID._id)
+                                      option(value=user._id selected)=user.userID
+                                    else
+                                      option(value=user._id)=user.userID
+                              .mb-2
+                                label.form-label.fw-bold(for='userObjectIDs') 관리자 유저 아이디 [배열]
+                                select#userObjectIDs.form-select(name="userIDs" multiple required)
+                                  each user in users
+                                    if updateBool && arrIncludesStr(adminItem.userIDs, String(user._id))
+                                      option(value=user._id selected)=user.userID
+                                    else
+                                      option(value=user._id)=user.userID
+                              .row.mt-4
+                                .col-12
+                                  a.btn.btn-secondary.waves-effect.waves-light.text-white.me-sm-3(onclick="history.go(-1);") 뒤로가기
+                                  button.btn.btn-success.waves-effect.waves-float.waves-light(type="submit")=`${updateBool ? "수정" : "등록"}하기`
+                  //- END: Content
+                //- END: Content wrapper
+              //- END: Layout container
+      else if crudType === "detail"
+        //- FIXME: 페이지에 맞게 id 수정
+        .admin__detail-page#admin__sampleDetail-page
+          .layout-wrapper.layout-content-navbar
+            .layout-container
+              //- BEGIN: Sidebar menu
+              include adminSidebar
+              //- END: Sidebar menu
+              //- BEGIN: Layout container
+              .layout-page
+                //- BEGIN: Navbar
+                include adminNavbar
+                //- END: Navbar
+                //- BEGIN: Content wrapper
+                .content-wrapper
+                  //- BEGIN: Content
+                  .container-xxl.flex-grow-1.container-p-y
+                    h4.fw-bold.py-3.mb-3.admin__page-title=`${adminNameKo} 상세보기`
+                    .row
+                      .col-12
+                        .card
+                          .card-body
+                            .card-body-wrap.mb-4
+                              h5.card-title.mb-1 썸네일
+                              img.img-fluid.d-flex.mt-0.mb-0.mr-auto.my-4.rounded(src=adminItem.thumbnail style="width: 100%; max-width: 400px;")
+                            .card-body-wrap.mb-4
+                              h5.card-title.mb-1 데이터1
+                              p.card-text=adminItem.data1
+                            .card-body-wrap.mb-4
+                              h5.card-title.mb-1 데이터2
+                              p.card-text=adminItem.data2
+                            .card-body-wrap.mb-4
+                              h5.card-title.mb-1 데이터3
+                              p.card-text=adminItem.data3
+                            .card-body-wrap.mb-4
+                              h5.card-title.mb-1 데이터4
+                              p.card-text=`${addComma(adminItem.data4)}원`
+                            .card-body-wrap.mb-4
+                              h5.card-title.mb-1 데이터5
+                              p.card-text=adminItem.data5
+                            .card-body-wrap.mb-4
+                              h5.card-title.mb-1 생성일
+                              p.card-text=dateFormatYMDHms(adminItem.createdAt)
+                            .card-body-wrap
+                              h5.card-title.mb-1 수정일
+                              p.card-text=dateFormatYMDHms(adminItem.updatedAt)
+                        .card__bot-btns-wrap.mt-3
+                          a.btn.btn-secondary.waves-effect.waves-light.text-white.me-sm-3(onclick="history.go(-1);") 뒤로가기
+                          a.btn.btn-success.waves-effect.waves-light.text-white(href=`${routes.admin}${adminLink}/update?itemID=${adminItem._id}`) 수정하기
+                  //- END: Content
+                //- END: Content wrapper
+              //- END: Layout container
+    //- Repeated scripts
+    include adminScripts
+    //- Vendors JS
+    script(src="/assets/vendor/libs/select2/select2.js")
+    script(src="/assets/vendor/libs/bootstrap-select/bootstrap-select.js")
+    script(src="/assets/vendor/libs/moment/moment.js")
+    script(src="/assets/vendor/libs/flatpickr/flatpickr.js")
+    script(src="/assets/vendor/libs/typeahead-js/typeahead.js")
+    script(src="/assets/vendor/libs/tagify/tagify.js")
+    script(src="/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js")
+    script(src="/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js")
+    script(src="/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js")
+    script(src="/assets/vendor/libs/cleavejs/cleave.js")
+    script(src="/assets/vendor/libs/cleavejs/cleave-phone.js")
+    script(src="/assets/vendor/libs/select2/select2.js")
+    //- Main JS
+    script(src="/assets/js/main.js")
+    //- Page JS
+    script(src="/assets/js/form-validation.js")
+    script(src="/assets/js/form-layouts.js")
+    

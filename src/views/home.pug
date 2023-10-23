@@ -1,0 +1,39 @@
+extends layouts/main
+
+block content
+  .home__page#home__page
+    input#test(type="text")
+    h2#test__h2 test1234
+    details(open)
+      summary
+        | "details 요소란?"
+      p 열림 상태일 때 정보를 표시하는 위젯이다.
+    label(for="local") 지역번호:
+    input(type="text" id="local" list="local-list")
+    datalist(id="local-list")
+      option(value="02" label="서울")
+      option(value="031" label="경기")
+    h1(style="font-weight: 100;") home page english font weight test
+    h1(style="font-weight: 200;") home page english font weight test
+    h1(style="font-weight: 300;") home page english font weight test
+    h1(style="font-weight: 400;") home page english font weight test
+    h1(style="font-weight: 500;") home page english font weight test
+    h1(style="font-weight: 600;") home page english font weight test
+    h1(style="font-weight: 700;") home page english font weight test
+    h1(style="font-weight: 800;") home page english font weight test
+    h1(style="font-weight: 900;") home page english font weight test
+    h1(style="font-weight: 100;") 1234567890 number test
+    h1(style="font-weight: 200;") 1234567890 number test
+    h1(style="font-weight: 300;") 1234567890 number test
+    h1(style="font-weight: 400;") 1234567890 number test
+    h1(style="font-weight: 500;") 1234567890 number test
+    h1(style="font-weight: 600;") 1234567890 number test
+    h1(style="font-weight: 700;") 1234567890 number test
+    h1(style="font-weight: 800;") 1234567890 number test
+    h1(style="font-weight: 900;") 1234567890 number test
+    h1(style="font-weight: 100;") 홈페이지 한글 폰트 두께 테스트
+    h1(style="font-weight: 300;") 홈페이지 한글 폰트 두께 테스트
+    h1(style="font-weight: normal;") 홈페이지 한글 폰트 두께 테스트
+    h1(style="font-weight: 600;") 홈페이지 한글 폰트 두께 테스트
+    h1(style="font-weight: bold;") 홈페이지 한글 폰트 두께 테스트
+    h1(style="font-weight: 900;") 홈페이지 한글 폰트 두께 테스트

@@ -1,0 +1,175 @@
+extends ../layouts/adminMain
+
+block content
+  body
+    main.admin__main
+      .admin__page#admin__sample-page
+        .layout-wrapper.layout-content-navbar
+          .layout-container
+            //- BEGIN: Sidebar menu
+            include adminSidebar
+            //- END: Sidebar menu
+            //- BEGIN: Layout container
+            .layout-page
+              //- BEGIN: Navbar
+              include adminNavbar
+              //- END: Navbar
+              //- BEGIN: Content wrapper
+              .content-wrapper
+                //- BEGIN: Content
+                .container-xxl.flex-grow-1.container-p-y
+                  h4.fw-bold.py-3.mb-3.admin__page-title=`${adminNameKo} 관리`
+                    span.text-muted 내용이 보이지 않을 시 좌우로 스크롤 해보세요.
+                  .row
+                    .content-body
+                      //- BEGIN: Basic Tables
+                      #basic-table.row
+                        .col-12
+                          .card(style="overflow: scroll;")
+                            //- BEGIN: Top button collections
+                            .top__btn-items.card-body.pb-2
+                              .top__btn-items-wrap
+                                //- BEGIN: Search bar section
+                                //- FIXME: 검색 기능을 사용하지 않는 경우 해당 영역 삭제 必 - 사용 시 Controller에서 세팅 必
+                                .top__btn-item.top__btn-item-search
+                                  form.needs-validation(method="GET")
+                                    .input-group
+                                      select#basicSelect.form-control(name="searchCode")
+                                        //- FIXME: 사용할 데이터 이름과 model에 사용된 key값을 value로 지정 [모든 검색은 키워드 검색, String만 가능, Number처리 필요할 경우 Controller에서 따로 작업 必]
+                                        each option in searchArr
+                                          if option.code === searchCode
+                                            option(value=option.code selected)=option.title
+                                          else
+                                            option(value=option.code)=option.title
+                                      input.form-control(type='search' name="searchValue" placeholder='검색어를 입력하세요...' value=searchValue aria-describedby='button-addon2')
+                                      #button-addon2.input-group-append
+                                        button.btn.btn-dark.waves-effect.search__btn(type="submit") 검색
+                                //- END: Search bar section
+                              .top__btn-items-wrap
+                                //- BEGIN: Excel download button section
+                                //- FIXME: 엑셀 다운로드 기능을 사용하지 않는 경우 해당 영역 삭제 必 - 사용 시 Controller에서 세팅 必
+                                .top__btn-item.top__btn-item-excel
+                                  button#excel__download-btn.btn.btn-secondary.buttons-collection.me-2.waves-effect.waves-light(type='button' name=`${adminNameKo}`)
+                                    i.ti.ti-file-export.me-sm-1
+                                    | 엑셀 다운로드
+                                  //- FIXME: 데이터 동기화 必
+                                  table#tableData(style='display: none;')
+                                    thead
+                                      tr
+                                        th 번호
+                                        th 썸네일
+                                        th 데이터1
+                                        th 데이터2
+                                        th 데이터3
+                                        th 데이터4
+                                        th 데이터5
+                                        th 생성일
+                                        th 수정일
+                                    tbody
+                                      each item, index in excelData
+                                        tr
+                                          td=index + 1
+                                          td=item.thumbnail
+                                          td=item.data1
+                                          td=item.data2
+                                          td=item.data3
+                                          td=item.data4
+                                          td=item.data5
+                                          td=dateFormatYMDHm(item.createdAt)
+                                          td=dateFormatYMDHm(item.updatedAt)
+                                //- END: Excel download button section
+                                //- BEGIN: Create button section
+                                //- FIXME: 데이터 등록 기능을 사용하지 않는 경우 해당 영역 삭제 必
+                                .top__btn-item.top__btn-item-create
+                                  a.btn.btn-success.waves-effect.waves-float.waves-light(href=`${routes.admin}${adminLink}/create`)
+                                    i.ti.ti-plus.me-sm-1
+                                    span=`${adminNameKo} 등록`
+                                //- END: Create button section
+                              .top__btn-items-wrap
+                                //- BEGIN: Sort link section
+                                //- FIXME: 분류 기능을 사용하지 않는 경우 해당 영역 삭제 必 - 사용 시 Controller에서 세팅 必
+                                .top__btn-item.top__btn-item-sort
+                                  ul.sorting__items
+                                    each sortItem, index in sortArr
+                                      if index !== 0
+                                        span.bg-label-secondary &nbsp;&nbsp;|&nbsp;&nbsp;
+                                      li.sorting__item
+                                        a.sorting__item-link.bg-label-secondary(href=`?sort=${sortItem.code}` class=`${sortItem.code === sortCode ? "bg-label-primary fw-bold" : ""}`)=sortItem.title
+                                //- END: Sort link section
+                            //- END: Top button collections
+                            //- BEGIN: Data table
+                            .table-responsive
+                              //- FIXME: 각 칼럼 width 적절히 조정 후 합계로 min-width 설정 必
+                              table.table.table-hover.table-striped.mb-0(style="min-width: 1700px;")
+                                thead
+                                  tr
+                                    //- FIXME: 데이터 동기화 必
+                                    th.text-center(scope='col' style="width: 80px;") 번호
+                                    th.text-center(scope='col' style="width: 100px;") 수정/삭제
+                                    th(scope='col' style="width: 100px;") 썸네일
+                                    th(scope='col' style="width: 200px;") 데이터1
+                                    th(scope='col' style="width: 200px;") 데이터2
+                                    th(scope='col' style="width: 200px;") 데이터3
+                                    th(scope='col' style="width: 200px;") 데이터4
+                                    th(scope='col' style="width: 300px;") 데이터5
+                                    th(scope='col' style="width: 160px;") 생성일
+                                    th(scope='col' style="width: 160px;") 수정일
+                                tbody
+                                  each item, index in adminItems
+                                    tr
+                                      //- FIXME: 데이터 동기화 必
+                                      td.text-center(scope='col' style="max-width: 80px;")
+                                        span.font-weight-bold=`${(index + 1) + (paginate.page - 1) * limit}`
+                                      td.text-center(scope='col' style="width: 100px;")
+                                        .td__items
+                                          a.td__item(href=`${routes.admin}${adminLink}/update?itemID=${item._id}`)
+                                            i.ti.ti-edit
+                                          a.td__item(href=`${routes.admin}${adminLink}/delete?itemID=${item._id}` onclick="return confirm('정말 삭제 하시겠습니까?')")
+                                            i.ti.ti-trash
+                                      td(scope='col' style="width: 100px;")
+                                        img(src=item.thumbnail width="100%" style="aspect-ratio: 1.6184 / 1;")
+                                      td.ellipsis__td(scope='col' style="width: 200px;")
+                                        a.td__link(href=`${routes.admin}${adminLink}/detail?itemID=${item._id}`)=item.data1
+                                          i.ti.ti-external-link
+                                      td.ellipsis__td(scope='col' style="width: 200px;")=item.data2
+                                      td.ellipsis__td(scope='col' style="width: 200px;")=item.data3
+                                      td.ellipsis__td(scope='col' style="width: 200px;")=`${addComma(item.data4)}원`
+                                      td.ellipsis__td(scope='col' style="width: 300px;")=item.data5
+                                      td(scope='col' style="width: 150px;")=dateFormatYMDHm(item.createdAt)
+                                      td(scope='col' style="width: 150px;")=dateFormatYMDHm(item.updatedAt)
+                            //- END: Data table
+                      //- END: Basic Tables
+                      //- BEGIN: Pagination
+                      #pagination__flex
+                        if adminItems.length !== 0
+                          nav(aria-label="Page navigation")
+                            ul.pagination
+                              li.page-item.first
+                                a.page-link.waves-effect(href=`?page=1&limit=${limit}` aria-label="First")
+                                  i.ti.ti-chevrons-left.ti-xs
+                              li.page-item.prev
+                                a.page-link.waves-effect(href=paginate.href(true) aria-label="Previous")
+                                  i.ti.ti-chevron-left.ti-xs
+                              each page in pages
+                                if paginate.page === page.number
+                                  li.page-item.active(aria-current='page')
+                                    a.page-link.waves-effect(href=page.url)=page.number
+                                else
+                                  li.page-item
+                                    a.page-link.waves-effect(href=page.url)=page.number
+                              li.page-item.next
+                                a.page-link.waves-effect(href=`${paginate.hasNextPages(pageCount) ? paginate.href() : ""}` aria-label="Next")
+                                  i.ti.ti-chevron-right.ti-xs
+                              li.page-item.last
+                                a.page-link.waves-effect(href=`?page=${pageCount}&limit=${limit}` aria-label="Last")
+                                  i.ti.ti-chevrons-right.ti-xs
+                      //- END: Pagination
+                //- END: Content
+              //- END: Content wrapper
+            //- END: Layout container
+    //- Repeated scripts
+    include adminScripts
+    //- Vendors JS
+    //- Main JS
+    script(src="/assets/js/main.js")
+    //- Page JS
