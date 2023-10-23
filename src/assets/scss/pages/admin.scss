@@ -178,6 +178,7 @@ main.admin__main {
                     // Data table
                     .table-responsive {
                       padding-bottom: 25px;
+                      min-height: 250px;
                       table.table {
                         table-layout: fixed;
                         th,
