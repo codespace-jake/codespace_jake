@@ -1,0 +1,116 @@
+extends ../layouts/adminMain
+
+block content
+  body
+    main.admin__main
+      .admin__page#admin__sample-page
+        .layout-wrapper.layout-content-navbar
+          .layout-container
+            //- BEGIN: Sidebar menu
+            include productSidebar
+            //- END: Sidebar menu
+            //- BEGIN: Layout container
+            .layout-page
+              //- BEGIN: Navbar
+              include productNavbar
+              //- END: Navbar
+              //- BEGIN: Content wrapper
+              .content-wrapper
+                //- BEGIN: Content
+                .container-xxl.flex-grow-1.container-p-y
+                  h4.fw-bold.py-3.mb-3.admin__page-title=`${adminNameKo} 관리`
+                    span.text-muted 내용이 보이지 않을 시 좌우로 스크롤 해보세요.
+                  .row
+                    .content-body
+                      //- BEGIN: Basic Tables
+                      #basic-table.row
+                        .col-12
+                          .card(style="overflow: scroll;")
+                            //- BEGIN: Top button collections
+                            .top__btn-items.card-body.pb-2
+                              .top__btn-items-wrap
+                                //- BEGIN: Create button section
+                                //- FIXME: 데이터 등록 기능을 사용하지 않는 경우 해당 영역 삭제 必
+                                .top__btn-item.top__btn-item-create
+                                  a.btn.btn-success.waves-effect.waves-float.waves-light(href=`${routes.product}${adminLink}/create`)
+                                    i.ti.ti-plus.me-sm-1
+                                    span=`${adminNameKo} 등록`
+                                //- END: Create button section
+                              .top__btn-items-wrap
+                            //- END: Top button collections
+                            //- BEGIN: Data table
+                            .table-responsive
+                              //- FIXME: 각 칼럼 width 적절히 조정 후 합계로 min-width 설정 必
+                              table.table.table-hover.table-striped.mb-0(style="min-width: 1350px;")
+                                thead
+                                  tr 
+                                    //- FIXME: 데이터 동기화 必 170씩 분배
+                                    th.text-center(scope='col' style="width: 80px;") 번호
+                                    th.text-center(scope='col' style="width: 100px;") 수정/삭제
+                                    th(scope='col' style="width: 250px;") 썸네일
+                                    th(scope='col' style="width: 100px;") 카테고리
+                                    th(scope='col' style="width: 100px;") 브랜드
+                                    th(scope='col' style="width: 100px;") 상품 제목
+                                    th(scope='col' style="width: 100px;") 원래 가격
+                                    th(scope='col' style="width: 100px;") 할인률
+                                    th(scope='col' style="width: 160px;") 생성일
+                                    th(scope='col' style="width: 160px;") 수정일
+                                tbody
+                                  each item, index in adminItems
+                                    tr
+                                      //- FIXME: 데이터 동기화 必
+                                      td.text-center(scope='col' style="max-width: 80px;")
+                                        span.font-weight-bold=`${(index + 1) + (paginate.page - 1) * limit}`
+                                      td.text-center(scope='col' style="width: 100px;")
+                                        .td__items
+                                          a.td__item(href=`${routes.product}${adminLink}/update?itemID=${item._id}`)
+                                            i.ti.ti-edit
+                                          a.td__item(href=`${routes.product}${adminLink}/delete?itemID=${item._id}` onclick="return confirm('정말 삭제 하시겠습니까?')")
+                                            i.ti.ti-trash
+                                      td(scope='col' style="width: 100px;")
+                                        img(src=item.thumbnail width="100%" style="aspect-ratio: 1.6184 / 1;")
+                                      td.ellipsis__td(scope='col' style="width: 200px;")
+                                        a.td__link(href=`${routes.product}${adminLink}/detail?itemID=${item._id}`)=item.catogory
+                                          i.ti.ti-external-link
+                                      td.ellipsis__td(scope='col' style="width: 200px;")=item.brand
+                                      td.ellipsis__td(scope='col' style="width: 200px;")=item.name
+                                      td.ellipsis__td(scope='col' style="width: 200px;")=item.price
+                                      td.ellipsis__td(scope='col' style="width: 300px;")=item.saleRatio
+                                      td(scope='col' style="width: 150px;")=dateFormatYMDHm(item.createdAt)
+                                      td(scope='col' style="width: 150px;")=dateFormatYMDHm(item.updatedAt)
+                            //- END: Data table
+                      //- END: Basic Tables
+                      //- BEGIN: Pagination
+                      #pagination__flex
+                        if adminItems.length !== 0
+                          nav(aria-label="Page navigation")
+                            ul.pagination
+                              li.page-item.first
+                                a.page-link.waves-effect(href=`?page=1&limit=${limit}` aria-label="First")
+                                  i.ti.ti-chevrons-left.ti-xs
+                              li.page-item.prev
+                                a.page-link.waves-effect(href=paginate.href(true) aria-label="Previous")
+                                  i.ti.ti-chevron-left.ti-xs
+                              each page in pages
+                                if paginate.page === page.number
+                                  li.page-item.active(aria-current='page')
+                                    a.page-link.waves-effect(href=page.url)=page.number
+                                else
+                                  li.page-item
+                                    a.page-link.waves-effect(href=page.url)=page.number
+                              li.page-item.next
+                                a.page-link.waves-effect(href=`${paginate.hasNextPages(pageCount) ? paginate.href() : ""}` aria-label="Next")
+                                  i.ti.ti-chevron-right.ti-xs
+                              li.page-item.last
+                                a.page-link.waves-effect(href=`?page=${pageCount}&limit=${limit}` aria-label="Last")
+                                  i.ti.ti-chevrons-right.ti-xs
+                      //- END: Pagination
+                //- END: Content
+              //- END: Content wrapper
+            //- END: Layout container
+    //- Repeated scripts
+    include ../admin/adminScripts
+    //- Vendors JS
+    //- Main JS
+    script(src="/assets/js/main.js")
+    //- Page JS

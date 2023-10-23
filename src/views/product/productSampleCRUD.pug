@@ -1,0 +1,142 @@
+extends ../layouts/adminMain
+
+block content
+  body
+    main.admin__main
+      if crudType === "create" || crudType === "update"
+        //- FIXME: 페이지에 맞게 id 수정
+        .admin__form-page#admin__sampleForm-page
+          .layout-wrapper.layout-content-navbar
+            .layout-container
+              //- BEGIN: Sidebar menu
+              include productSidebar
+              //- END: Sidebar menu
+              //- BEGIN: Layout container
+              .layout-page
+                //- BEGIN: Navbar
+                include productNavbar
+                //- END: Navbar
+                //- BEGIN: Content wrapper
+                .content-wrapper
+                  //- BEGIN: Content
+                  .container-xxl.flex-grow-1.container-p-y
+                    h4.fw-bold.py-3.mb-3.admin__page-title=`${adminNameKo} ${updateBool ? "수정" : "등록"}`
+                    .row
+                      .col-12.col-lg-7
+                        .card
+                          .card-body
+                            form.browser-default-validation.admin__form(enctype="multipart/form-data" method="POST")
+                              input(type="hidden" name="itemID" value=`${updateBool ? adminItem._id : ""}` readonly required)
+                              .col-12
+                                h5.fw-semibold 1. 이미지 등록 영역
+                                hr.mt-0
+                              .mb-2
+                                label.form-label.fw-bold(for="thumbnail-img") 썸네일 이미지
+                                label.form-label.text-danger.fw-bold &nbsp;&nbsp;[권장 사이즈: 1682px * 1122px]
+                                if updateBool
+                                  h6.text-success.mb-2.fw-bold.guide__heading 선택하지 않으면 이전 데이터로 유지합니다.&nbsp;
+                                    a.text-success(href=adminItem.thumbnail target="_blank") [이전 이미지 보기]
+                                  input#thumbnail-img.form-control(type="file" name="thumbnail")
+                                else
+                                  input#thumbnail-img.form-control(type="file" name="thumbnail" required)
+                              .col-12.mt-5
+                                h5.fw-semibold 2. 데이터 등록 영역
+                                hr.mt-0
+                              .mb-2
+                                label.form-label.fw-bold(for='#category') 카테고리
+                                input#category.form-control(type='text' name="category" value=`${updateBool ? adminItem.category : ""}` placeholder="카테고리을 입력하세요" required)
+                              .mb-2
+                                label.form-label.fw-bold(for='#brand') 브랜드
+                                input#brand.form-control(type='text' name="brand" value=`${updateBool ? adminItem.brand : ""}` placeholder="브랜드를 입력하세요" required)
+                              .mb-2
+                                label.form-label.fw-bold(for='#name') 상품 제목
+                                label.form-label.text-danger.fw-bold 
+                                input#name.form-control(type='text' name="name" value=`${updateBool ? adminItem.name : ""}` placeholder="상품 제목을 입력하세요" required)
+                              .mb-2
+                                label.form-label.fw-bold(for='#price') 가격
+                                label.form-label.text-danger.fw-bold &nbsp;&nbsp;[샘플의 가격으로 숫자만 입력 가능합니다]
+                                input#price.form-control(type='number' name="price" value=`${updateBool ? adminItem.price : ""}` placeholder="가격를 입력하세요" required)
+                              .mb-2
+                                label.form-label.fw-bold(for='#saleRatio') 할인률
+                                label.form-label.text-danger.fw-bold &nbsp;&nbsp;[샘플의 할인율로 숫자만 입력 가능합니다]
+                                input#saleRatio.form-control(type='number' name="saleRatio" value=`${updateBool ? adminItem.saleRatio : ""}` placeholder="할인률을 입력하세요" required)
+                              .row.mt-4
+                                .col-12
+                                  a.btn.btn-secondary.waves-effect.waves-light.text-white.me-sm-3(onclick="history.go(-1);") 뒤로가기
+                                  button.btn.btn-success.waves-effect.waves-float.waves-light(type="submit")=`${updateBool ? "수정" : "등록"}하기`
+                  //- END: Content
+                //- END: Content wrapper
+              //- END: Layout container
+      else if crudType === "detail"
+        //- FIXME: 페이지에 맞게 id 수정
+        .admin__detail-page#admin__sampleDetail-page
+          .layout-wrapper.layout-content-navbar
+            .layout-container
+              //- BEGIN: Sidebar menu
+              include productSidebar
+              //- END: Sidebar menu
+              //- BEGIN: Layout container
+              .layout-page
+                //- BEGIN: Navbar
+                include productNavbar
+                //- END: Navbar
+                //- BEGIN: Content wrapper
+                .content-wrapper
+                  //- BEGIN: Content
+                  .container-xxl.flex-grow-1.container-p-y
+                    h4.fw-bold.py-3.mb-3.admin__page-title=`${adminNameKo} 상세보기`
+                    .row
+                      .col-12
+                        .card
+                          .card-body
+                            .card-body-wrap.mb-4
+                              h5.card-title.mb-1 썸네일
+                              img.img-fluid.d-flex.mt-0.mb-0.mr-auto.my-4.rounded(src=adminItem.thumbnail style="width: 100%; max-width: 400px;")
+                            .card-body-wrap.mb-4
+                              h5.card-title.mb-1 카테고리
+                              p.card-text=adminItem.category
+                            .card-body-wrap.mb-4
+                              h5.card-title.mb-1 브랜드
+                              p.card-text=adminItem.brand
+                            .card-body-wrap.mb-4
+                              h5.card-title.mb-1 상품 제목
+                              p.card-text=adminItem.name
+                            .card-body-wrap.mb-4
+                              h5.card-title.mb-1 가격
+                              p.card-text=`${addComma(adminItem.price)}원`
+                            .card-body-wrap.mb-4
+                              h5.card-title.mb-1 할인률
+                              p.card-text=adminItem.saleRatio
+                            .card-body-wrap.mb-4
+                              h5.card-title.mb-1 생성일
+                              p.card-text=dateFormatYMDHms(adminItem.createdAt)
+                            .card-body-wrap
+                              h5.card-title.mb-1 수정일
+                              p.card-text=dateFormatYMDHms(adminItem.updatedAt)
+                        .card__bot-btns-wrap.mt-3
+                          a.btn.btn-secondary.waves-effect.waves-light.text-white.me-sm-3(onclick="history.go(-1);") 뒤로가기
+                          a.btn.btn-success.waves-effect.waves-light.text-white(href=`${routes.product}${adminLink}/update?itemID=${adminItem._id}`) 수정하기
+                  //- END: Content
+                //- END: Content wrapper
+              //- END: Layout container
+    //- Repeated scripts
+    include ../admin/adminScripts
+    //- Vendors JS
+    script(src="/assets/vendor/libs/select2/select2.js")
+    script(src="/assets/vendor/libs/bootstrap-select/bootstrap-select.js")
+    script(src="/assets/vendor/libs/moment/moment.js")
+    script(src="/assets/vendor/libs/flatpickr/flatpickr.js")
+    script(src="/assets/vendor/libs/typeahead-js/typeahead.js")
+    script(src="/assets/vendor/libs/tagify/tagify.js")
+    script(src="/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js")
+    script(src="/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js")
+    script(src="/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js")
+    script(src="/assets/vendor/libs/cleavejs/cleave.js")
+    script(src="/assets/vendor/libs/cleavejs/cleave-phone.js")
+    script(src="/assets/vendor/libs/select2/select2.js")
+    //- Main JS
+    script(src="/assets/js/main.js")
+    //- Page JS
+    script(src="/assets/js/form-validation.js")
+    script(src="/assets/js/form-layouts.js")
+    
