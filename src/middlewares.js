@@ -78,12 +78,19 @@ export const localsMiddleware = (req, res, next) => {
       const regexp = /\B(?=(\d{3})+(?!\d))/g;
       return number.toString().replace(regexp, ",");
     },
+    // 할인률 계산
+    getDiscountPrice: (price, saleRatio) => {
+      return price - price * (saleRatio / 100);
+    },
     // 날짜 형식 변환
     dateFormatYMD: (date) => moment(date).tz("Asia/Seoul").format("YYYY-MM-DD"),
-    dateFormatYMDHm: (date) => moment(date).tz("Asia/Seoul").format("YYYY-MM-DD HH:mm"),
-    dateFormatYMDHms: (date) => moment(date).tz("Asia/Seoul").format("YYYY-MM-DD HH:mm:ss"),
+    dateFormatYMDHm: (date) =>
+      moment(date).tz("Asia/Seoul").format("YYYY-MM-DD HH:mm"),
+    dateFormatYMDHms: (date) =>
+      moment(date).tz("Asia/Seoul").format("YYYY-MM-DD HH:mm:ss"),
     // 해당하는 문자열 모두 치환
-    replaceAll: (str, searchStr, replaceStr) => str.split(searchStr).join(replaceStr),
+    replaceAll: (str, searchStr, replaceStr) =>
+      str.split(searchStr).join(replaceStr),
     // 배열 Random 섞기
     shuffleArray: (arr) => {
       for (let i = arr.length - 1; i > 0; i -= 1) {
