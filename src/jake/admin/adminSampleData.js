@@ -26,8 +26,6 @@ export const adminSampleData = async (req, res) => {
       제품모델.countDocuments(findQuery),
     ]);
 
-    console.log(totalCount, "토탈카운트2");
-
     const pageCount = Math.ceil(totalCount / limit);
     const pages = paginate.getArrayPages(req)(10, pageCount, req.query.page);
     // END: pagination 데이터
