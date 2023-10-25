@@ -16,6 +16,11 @@ import {
   postAdminSampleDataCrud,
 } from "../jake/admin/adminSampleData";
 import {
+  adminMagazineData,
+  getAdminMagazineDataCrud,
+  postAdminMagazineDataCrud,
+} from "../jake/admin/adminMagazineData";
+import {
   adminUser,
   adminUserApprove,
   adminUserDelete,
@@ -75,6 +80,24 @@ productRouter.post(
   onlyAdmin,
   uploadSampleImg,
   postAdminSampleDataCrud
+);
+
+// 관리자 메거진 관리
+productRouter.get(
+  `${routes.productMagazine}`,
+  onlyAdmin,
+  paginate.middleware(20, 50),
+  adminMagazineData
+);
+productRouter.get(
+  `${routes.productMagazine}/:crudType`,
+  onlyAdmin,
+  getAdminMagazineDataCrud
+);
+productRouter.post(
+  `${routes.productMagazine}/:crudType`,
+  onlyAdmin,
+  postAdminMagazineDataCrud
 );
 
 export default productRouter;

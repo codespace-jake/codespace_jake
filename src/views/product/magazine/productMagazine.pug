@@ -1,4 +1,4 @@
-extends ../layouts/adminMain
+extends ../../layouts/adminMain
 
 block content
   body
@@ -7,12 +7,12 @@ block content
         .layout-wrapper.layout-content-navbar
           .layout-container
             //- BEGIN: Sidebar menu
-            include productSidebar
+            include ../productSidebar
             //- END: Sidebar menu
             //- BEGIN: Layout container
             .layout-page
               //- BEGIN: Navbar
-              include productNavbar
+              include ../productNavbar
               //- END: Navbar
               //- BEGIN: Content wrapper
               .content-wrapper
@@ -41,18 +41,14 @@ block content
                             //- BEGIN: Data table
                             .table-responsive
                               //- FIXME: 각 칼럼 width 적절히 조정 후 합계로 min-width 설정 必
-                              table.table.table-hover.table-striped.mb-0(style="min-width: 1450px;")
+                              table.table.table-hover.table-striped.mb-0
                                 thead
                                   tr 
                                     //- FIXME: 데이터 동기화 必 170씩 분배
                                     th.text-center(scope='col' style="width: 80px;") 번호
                                     th.text-center(scope='col' style="width: 100px;") 수정/삭제
-                                    th(scope='col' style="width: 250px;") 썸네일 (누르면 상세페이지로 이동!)
-                                    th(scope='col' style="width: 100px;") 카테고리
-                                    th(scope='col' style="width: 150px;") 브랜드
-                                    th(scope='col' style="width: 150px;") 상품 제목
-                                    th(scope='col' style="width: 100px;") 원래 가격
-                                    th(scope='col' style="width: 100px;") 할인률
+                                    th(scope='col' style="width: 160px;") 제목
+                                    th(scope='col' style="width: 160px;") 본문
                                     th(scope='col' style="width: 160px;") 생성일
                                     th(scope='col' style="width: 160px;") 수정일
                                 tbody
@@ -67,14 +63,9 @@ block content
                                             i.ti.ti-edit
                                           a.td__item(href=`${routes.product}${adminLink}/delete?itemID=${item._id}` onclick="return confirm('정말 삭제 하시겠습니까?')")
                                             i.ti.ti-trash
-                                      td(scope='col' style="width: 100px;")
-                                        a.td__link(href=`${routes.product}${adminLink}/detail?itemID=${item._id}`)                                        
-                                          img(src=item.thumbnail width="100%" style="aspect-ratio: 1.6184 / 1;")
-                                      td.ellipsis__td(scope='col' style="width: 200px;")=item.category
-                                      td.ellipsis__td(scope='col' style="width: 200px;")=item.brand
-                                      td.ellipsis__td(scope='col' style="width: 200px;")=item.name
-                                      td.ellipsis__td(scope='col' style="width: 200px;")=`${addComma(getDiscountPrice(item.price,item.saleRatio))}원`
-                                      td.ellipsis__td(scope='col' style="width: 300px;")=`${item.saleRatio}%`
+                                      td.ellipsis__td(scope='col' style="width: 200px;")
+                                          a.td__link(href=`${routes.product}${adminLink}/detail?itemID=${item._id}`)=item.title                                     
+                                      td.ellipsis__td(scope='col' style="width: 200px;")=item.body
                                       td(scope='col' style="width: 150px;")=dateFormatYMDHm(item.createdAt)
                                       td(scope='col' style="width: 150px;")=dateFormatYMDHm(item.updatedAt)
                             //- END: Data table
@@ -108,7 +99,7 @@ block content
               //- END: Content wrapper
             //- END: Layout container
     //- Repeated scripts
-    include ../admin/adminScripts
+    include ../../admin/adminScripts
     //- Vendors JS
     //- Main JS
     script(src="/assets/js/main.js")

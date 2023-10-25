@@ -36,8 +36,9 @@ const PRODUCT_LOGIN = "/login";
 const PRODUCT_LOGOUT = "/logout";
 const PRODUCT_CHANGE_PW = "/change-pw";
 const PRODUCT_USER = "/user";
-// PRODUCT SAMPLE(CRUD용)
+// PRODUCT Content(CRUD용)
 const PRODUCT_SAMPLE = "/sample";
+const PRODUCT_MAGAZINE = "/magazine";
 
 // API
 const API = "/api";
@@ -81,8 +82,10 @@ const routes = {
   productLogout: PRODUCT_LOGOUT,
   productChangePW: PRODUCT_CHANGE_PW,
   productUser: PRODUCT_USER,
-  // Product SAMPLE(CRUD용)
+
+  // Product Content(CRUD용)
   productSample: PRODUCT_SAMPLE,
+  productMagazine: PRODUCT_MAGAZINE,
 
   // API
   api: API,
