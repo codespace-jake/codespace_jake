@@ -5,9 +5,7 @@ import routes from "../../routes";
 export const get관리자로그인 = (req, res) => {
   try {
     if (req.user) {
-      res.send(
-        `<script>location.href="${routes.product}${routes.productUser}"</script>`
-      );
+      res.send(`<script>location.href="${routes.product}${routes.productUser}"</script>`);
     } else {
       res.render("product/productLogin");
     }
@@ -19,6 +17,7 @@ export const get관리자로그인 = (req, res) => {
     );
   }
 };
+
 export const post관리자로그인 = (req, res, next) => {
   try {
     passport.authenticate("local", (err, user) => {
@@ -40,9 +39,7 @@ export const post관리자로그인 = (req, res, next) => {
           if (err) {
             next(e);
           }
-          res.send(
-            `<script>location.href="${routes.product}${routes.productUser}"</script>`
-          );
+          res.send(`<script>location.href="${routes.product}${routes.productUser}"</script>`);
         });
       }
     })(req, res, next);
