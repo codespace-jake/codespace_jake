@@ -43,8 +43,10 @@ block content
                                 h5.fw-semibold 2. 데이터 등록 영역
                                 hr.mt-0
                               .mb-2
-                                label.form-label.fw-bold(for='#category') 카테고리
-                                input#category.form-control(type='text' name="category" value=`${updateBool ? adminItem.category : ""}` placeholder="카테고리을 입력하세요" required)
+                                .h6.fw-semibold 카테고리
+                                select#category.select.form-control(name="category")
+                                  each option in categoryArr
+                                    option(value=option.value)=option.value
                               .mb-2
                                 label.form-label.fw-bold(for='#brand') 브랜드
                                 input#brand.form-control(type='text' name="brand" value=`${updateBool ? adminItem.brand : ""}` placeholder="브랜드를 입력하세요" required)

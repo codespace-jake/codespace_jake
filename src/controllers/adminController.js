@@ -332,6 +332,21 @@ export const getAdminProductCrud = async (req, res) => {
       params: { crudType },
       query: { itemID },
     } = req;
+
+    // BEGIN: 검색 기능이 있을 경우
+    const categoryArr = [
+      { value: "패션의류/잡화", type: "string" },
+      { value: "뷰티", type: "string" },
+      { value: "식품", type: "string" },
+      { value: "가전디지털", type: "string" },
+      { value: "반려동물용품", type: "string" },
+      { value: "생활용품", type: "string" },
+      { value: "주방용품", type: "string" },
+      { value: "스포츠레저", type: "string" },
+      { value: "자동차용품", type: "string" },
+      { value: "완구/취미", type: "string" },
+    ];
+
     let adminItem;
     if (itemID) {
       adminItem = await Product.findById(itemID);
@@ -345,6 +360,7 @@ export const getAdminProductCrud = async (req, res) => {
       crudType,
       adminNameKo,
       adminLink,
+      categoryArr,
       updateBool,
       adminItem,
       users,
@@ -390,6 +406,8 @@ export const postAdminProductCrud = async (req, res) => {
       body.thumbnail = file ? file.location : adminItem.thumbnail;
       await Product.findByIdAndUpdate(itemID, body);
     }
+
+    console.log(body, "바디");
 
     // 공통
     res.send(
