@@ -18,6 +18,6 @@ const magazineDataSchema = new Schema(
   { timestamps: true }
 );
 
-const 매거진모델 = mongoose.model("magazine_jake", magazineDataSchema);
+const model = mongoose.model("magazine_jake", magazineDataSchema);
 
-export default 매거진모델;
+export default model;

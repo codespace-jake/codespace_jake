@@ -1,4 +1,4 @@
-extends ../../layouts/adminMain
+extends ../layouts/adminMain
 
 block content
   body
@@ -9,12 +9,12 @@ block content
           .layout-wrapper.layout-content-navbar
             .layout-container
               //- BEGIN: Sidebar menu
-              include ../productSidebar
+              include adminSidebar
               //- END: Sidebar menu
               //- BEGIN: Layout container
               .layout-page
                 //- BEGIN: Navbar
-                include ../productNavbar
+                include adminNavbar
                 //- END: Navbar
                 //- BEGIN: Content wrapper
                 .content-wrapper
@@ -49,12 +49,12 @@ block content
           .layout-wrapper.layout-content-navbar
             .layout-container
               //- BEGIN: Sidebar menu
-              include ../productSidebar
+              include adminSidebar
               //- END: Sidebar menu
               //- BEGIN: Layout container
               .layout-page
                 //- BEGIN: Navbar
-                include ../productNavbar
+                include adminNavbar
                 //- END: Navbar
                 //- BEGIN: Content wrapper
                 .content-wrapper
@@ -79,12 +79,12 @@ block content
                               p.card-text=dateFormatYMDHms(adminItem.updatedAt)
                         .card__bot-btns-wrap.mt-3
                           a.btn.btn-secondary.waves-effect.waves-light.text-white.me-sm-3(onclick="history.go(-1);") 뒤로가기
-                          a.btn.btn-success.waves-effect.waves-light.text-white(href=`${routes.product}${adminLink}/update?itemID=${adminItem._id}`) 수정하기
+                          a.btn.btn-success.waves-effect.waves-light.text-white(href=`${routes.admin}${adminLink}/update?itemID=${adminItem._id}`) 수정하기
                   //- END: Content
                 //- END: Content wrapper
               //- END: Layout container
     //- Repeated scripts
-    include ../../admin/adminScripts
+    include adminScripts
     //- Vendors JS
     script(src="/assets/vendor/libs/select2/select2.js")
     script(src="/assets/vendor/libs/bootstrap-select/bootstrap-select.js")

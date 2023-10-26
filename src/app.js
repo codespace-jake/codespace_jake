@@ -17,7 +17,7 @@ import apiRouter from "./routers/apiRouter";
 // import authRouter from "./routers/authRouter";
 import { localsMiddleware } from "./middlewares";
 import "./passport";
-import productRouter from "./routers/productRouter";
+import adminRouter from "./routers/adminRouter";
 
 const app = express();
 
@@ -62,7 +62,7 @@ app.use(localsMiddleware);
 
 app.use(routes.home, globalRouter);
 app.use(routes.user, userRouter);
-app.use(routes.product, productRouter);
+app.use(routes.admin, adminRouter);
 app.use(routes.api, apiRouter);
 app.use((_, res) => {
   // 404 처리 부분

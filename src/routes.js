@@ -27,18 +27,18 @@ const ADMIN_LOGOUT = "/logout";
 const ADMIN_CHANGE_PW = "/change-pw";
 const ADMIN_USER = "/user";
 // ADMIN SAMPLE(CRUD용)
-const ADMIN_SAMPLE = "/sample";
-
-//Product (새로 생성)
-const PRODUCT = "/product";
-const PRODUCT_REGISTER = "/register";
-const PRODUCT_LOGIN = "/login";
-const PRODUCT_LOGOUT = "/logout";
-const PRODUCT_CHANGE_PW = "/change-pw";
-const PRODUCT_USER = "/user";
-// PRODUCT Content(CRUD용)
-const PRODUCT_SAMPLE = "/sample";
-const PRODUCT_MAGAZINE = "/magazine";
+const ADMIN_PRODUCT = "/product";
+const ADMIN_MAGAZINE = "/magazine";
+// //Product (새로 생성)
+// const PRODUCT = "/product";
+// const PRODUCT_REGISTER = "/register";
+// const PRODUCT_LOGIN = "/login";
+// const PRODUCT_LOGOUT = "/logout";
+// const PRODUCT_CHANGE_PW = "/change-pw";
+// const PRODUCT_USER = "/user";
+// // PRODUCT Content(CRUD용)
+// const PRODUCT_SAMPLE = "/sample";
+// const PRODUCT_MAGAZINE = "/magazine";
 
 // API
 const API = "/api";
@@ -72,20 +72,21 @@ const routes = {
   adminLogout: ADMIN_LOGOUT,
   adminChangePW: ADMIN_CHANGE_PW,
   adminUser: ADMIN_USER,
-  // ADMIN SAMPLE(CRUD용)
-  adminSample: ADMIN_SAMPLE,
+  // ADMIN PRODUCT(CRUD용)
+  adminProduct: ADMIN_PRODUCT,
+  adminMagazine: ADMIN_MAGAZINE,
 
-  // Product
-  product: PRODUCT,
-  productRegister: PRODUCT_REGISTER,
-  productLogin: PRODUCT_LOGIN,
-  productLogout: PRODUCT_LOGOUT,
-  productChangePW: PRODUCT_CHANGE_PW,
-  productUser: PRODUCT_USER,
+  // // Product
+  // product: PRODUCT,
+  // productRegister: PRODUCT_REGISTER,
+  // productLogin: PRODUCT_LOGIN,
+  // productLogout: PRODUCT_LOGOUT,
+  // productChangePW: PRODUCT_CHANGE_PW,
+  // productUser: PRODUCT_USER,
 
-  // Product Content(CRUD용)
-  productSample: PRODUCT_SAMPLE,
-  productMagazine: PRODUCT_MAGAZINE,
+  // // Product Content(CRUD용)
+  // productSample: PRODUCT_SAMPLE,
+  // productMagazine: PRODUCT_MAGAZINE,
 
   // API
   api: API,

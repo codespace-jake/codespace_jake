@@ -9,12 +9,12 @@ block content
           .layout-wrapper.layout-content-navbar
             .layout-container
               //- BEGIN: Sidebar menu
-              include productSidebar
+              include adminSidebar
               //- END: Sidebar menu
               //- BEGIN: Layout container
               .layout-page
                 //- BEGIN: Navbar
-                include productNavbar
+                include adminNavbar
                 //- END: Navbar
                 //- BEGIN: Content wrapper
                 .content-wrapper
@@ -53,6 +53,9 @@ block content
                                 label.form-label.text-danger.fw-bold 
                                 input#name.form-control(type='text' name="name" value=`${updateBool ? adminItem.name : ""}` placeholder="상품 제목을 입력하세요" required)
                               .mb-2
+                                label.form-label.fw-bold(for='#description') 내용
+                                textarea#description.form-control(type='textarea' name="description" placeholder="내용을 입력하세요" cols=500 required)=`${updateBool ? adminItem.description : ""}`
+                              .mb-2
                                 label.form-label.fw-bold(for='#price') 가격
                                 label.form-label.text-danger.fw-bold &nbsp;&nbsp;[샘플의 가격으로 숫자만 입력 가능합니다]
                                 input#price.form-control(type='number' name="price" value=`${updateBool ? adminItem.price : ""}` placeholder="가격를 입력하세요" required)
@@ -73,12 +76,12 @@ block content
           .layout-wrapper.layout-content-navbar
             .layout-container
               //- BEGIN: Sidebar menu
-              include productSidebar
+              include adminSidebar
               //- END: Sidebar menu
               //- BEGIN: Layout container
               .layout-page
                 //- BEGIN: Navbar
-                include productNavbar
+                include adminNavbar
                 //- END: Navbar
                 //- BEGIN: Content wrapper
                 .content-wrapper
@@ -102,6 +105,9 @@ block content
                               h5.card-title.mb-1 상품 제목
                               p.card-text=adminItem.name
                             .card-body-wrap.mb-4
+                              h5.card-title.mb-1 상품 설명
+                              p.card-text=adminItem.description
+                            .card-body-wrap.mb-4
                               h5.card-title.mb-1 가격
                               p.card-text=`${addComma(adminItem.price)}원`
                             .card-body-wrap.mb-4
@@ -115,12 +121,12 @@ block content
                               p.card-text=dateFormatYMDHms(adminItem.updatedAt)
                         .card__bot-btns-wrap.mt-3
                           a.btn.btn-secondary.waves-effect.waves-light.text-white.me-sm-3(onclick="history.go(-1);") 뒤로가기
-                          a.btn.btn-success.waves-effect.waves-light.text-white(href=`${routes.product}${adminLink}/update?itemID=${adminItem._id}`) 수정하기
+                          a.btn.btn-success.waves-effect.waves-light.text-white(href=`${routes.admin}${adminLink}/update?itemID=${adminItem._id}`) 수정하기
                   //- END: Content
                 //- END: Content wrapper
               //- END: Layout container
     //- Repeated scripts
-    include ../admin/adminScripts
+    include adminScripts
     //- Vendors JS
     script(src="/assets/vendor/libs/select2/select2.js")
     script(src="/assets/vendor/libs/bootstrap-select/bootstrap-select.js")

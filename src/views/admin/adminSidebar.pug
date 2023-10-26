@@ -15,11 +15,19 @@ aside#layout-menu.layout-menu.menu-vertical.menu.bg-menu-theme
       a.menu-link(href=`${routes.admin}`)
         i.menu-icon.tf-icons.ti.ti-user-search
         | 관리자 계정 관리
-    //- 샘플 관리
+    //- 상품 관리
     li.menu-header.small.text-uppercase
-      span.menu-header-text 샘플 관리
-    //- 샘플 관리 > 샘플 데이터 관리
+      span.menu-header-text 상품 관리
+    //- 상품 관리 > 상품 데이터 관리
     li.menu-item#admin__menu-sample
-      a.menu-link(href=`${routes.admin}${routes.adminSample}`)
+      a.menu-link(href=`${routes.admin}${routes.adminProduct}`)
         i.menu-icon.tf-icons.ti.ti-test-pipe
-        | 샘플 데이터 관리
+        | 상품 데이터 관리
+    //- 매거진 관리
+    li.menu-header.small.text-uppercase
+      span.menu-header-text 매거진 관리
+    //- 매거진 관리 > 매거진 데이터 관리
+    li.menu-item#admin__menu-sample
+      a.menu-link(href=`${routes.admin}${routes.adminMagazine}`)
+        i.menu-icon.tf-icons.ti.ti-test-pipe
+        | 매거진 데이터 관리

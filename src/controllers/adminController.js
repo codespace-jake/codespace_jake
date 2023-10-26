@@ -3,13 +3,15 @@ import paginate from "express-paginate";
 import moment from "moment-timezone";
 import routes from "../routes";
 import User from "../models/User";
-import Sample from "../models/Sample";
-
+import Product from "../models/Product";
+import Magazine from "../models/Magazine";
 // 관리자 로그인
 export const getAdminLogin = (req, res) => {
   try {
     if (req.user) {
-      res.send(`<script>location.href="${routes.admin}${routes.adminUser}"</script>`);
+      res.send(
+        `<script>location.href="${routes.admin}${routes.adminUser}"</script>`
+      );
     } else {
       res.render("admin/adminLogin");
     }
@@ -42,7 +44,9 @@ export const postAdminLogin = (req, res, next) => {
           if (err) {
             next(e);
           }
-          res.send(`<script>location.href="${routes.admin}${routes.adminUser}"</script>`);
+          res.send(
+            `<script>location.href="${routes.admin}${routes.adminUser}"</script>`
+          );
         });
       }
     })(req, res, next);
@@ -59,7 +63,9 @@ export const postAdminLogin = (req, res, next) => {
 export const getAdminRegister = (req, res) => {
   try {
     if (req.user) {
-      res.send(`<script>location.href="${routes.admin}${routes.adminUser}"</script>`);
+      res.send(
+        `<script>location.href="${routes.admin}${routes.adminUser}"</script>`
+      );
     } else {
       res.render("admin/adminRegister");
     }
@@ -85,7 +91,9 @@ export const postAdminRegister = async (req, res) => {
         </script>`
       );
     } else if (users) {
-      res.send(`<script>alert("이미 가입된 아이디 입니다.");history.go(-1);</script>`);
+      res.send(
+        `<script>alert("이미 가입된 아이디 입니다.");history.go(-1);</script>`
+      );
     } else {
       try {
         body.createdAt = moment(new Date()).tz("Asia/Seoul");
@@ -182,7 +190,9 @@ export const adminUser = async (req, res) => {
       query: { searchKey, searchValue, limit },
     } = req;
 
-    const findQuery = { $or: [{ role: "admin" }, { role: "master" }, { role: "general" }] };
+    const findQuery = {
+      $or: [{ role: "admin" }, { role: "master" }, { role: "general" }],
+    };
     const sortQuery = { createdAt: 1 };
 
     // BEGIN: 검색 기능이 있을 경우
@@ -191,12 +201,19 @@ export const adminUser = async (req, res) => {
       { code: "1", title: "이름", value: "name", type: "string" },
     ];
     if (searchKey && searchValue) {
-      findQuery[`${searchArr[parseInt(searchKey, 10)].value}`] = { $regex: searchValue, $options: "i" };
+      findQuery[`${searchArr[parseInt(searchKey, 10)].value}`] = {
+        $regex: searchValue,
+        $options: "i",
+      };
     }
     // END: 검색 기능이 있을 경우
 
     const [adminItems, totalCount] = await Promise.all([
-      User.find(findQuery).sort(sortQuery).limit(req.query.limit).skip(req.skip).exec(),
+      User.find(findQuery)
+        .sort(sortQuery)
+        .limit(req.query.limit)
+        .skip(req.skip)
+        .exec(),
       User.countDocuments(),
     ]);
     const pageCount = Math.ceil(totalCount / req.query.limit);
@@ -252,7 +269,9 @@ export const adminUserDelete = async (req, res) => {
       params: { userID },
     } = req;
     await User.findByIdAndDelete(userID);
-    res.send(`<script>location.href="${routes.admin}${routes.adminUser}"</script>`);
+    res.send(
+      `<script>location.href="${routes.admin}${routes.adminUser}"</script>`
+    );
   } catch (err) {
     console.log(err);
     res.send(
@@ -262,11 +281,11 @@ export const adminUserDelete = async (req, res) => {
   }
 };
 
-// 관리자 샘플 관리
-export const adminSample = async (req, res) => {
+// 관리자 상품 관리
+export const adminProduct = async (req, res) => {
   try {
     const {
-      query: { sort, searchCode, searchValue, limit },
+      query: { limit },
     } = req;
 
     // findQuery default 값
@@ -274,86 +293,40 @@ export const adminSample = async (req, res) => {
     // sortQuery default 값
     let sortQuery = { createdAt: -1 };
 
-    // BEGIN: 분류 기능이 있을 경우
-    const sortArr = [
-      { code: "0", title: "최근등록순", value: "createdAt", order: -1 },
-      { code: "1", title: "이전등록순", value: "createdAt", order: 1 },
-      { code: "2", title: "최근수정순", value: "updatedAt", order: -1 },
-      { code: "3", title: "데이터3 내림차순", value: "data3", order: -1 },
-    ];
-    const sortCode = sort || sortArr[0].code;
-    if (sort) {
-      sortQuery = {};
-      sortArr.forEach((x, i) => {
-        if (x.code === sort) sortQuery[`${sortArr[i].value}`] = sortArr[i].order;
-      });
-    }
-    // END: 분류 기능이 있을 경우
-
-    // BEGIN: 검색 기능이 있을 경우
-    const searchArr = [
-      { code: "0", title: "데이터1", value: "data1", type: "string" },
-      { code: "1", title: "데이터2", value: "data2", type: "string" },
-      { code: "2", title: "데이터3", value: "data3", type: "string" },
-      { code: "3", title: "데이터4", value: "data4", type: "string" },
-      { code: "4", title: "데이터5", value: "data5", type: "number" },
-      { code: "5", title: "유저 아이디 [객체]", value: "userID", type: "objectID" },
-      { code: "6", title: "유저 아이디 [배열]", value: "userIDs", type: "objectID" },
-    ];
-    if (searchCode && searchValue) {
-      for (let i = 0; i < searchArr.length; i += 1) {
-        if (searchArr[i].code === searchCode) {
-          if (searchArr[i].type === "string") {
-            findQuery[searchArr[i].value] = { $regex: searchValue, $options: "i" };
-          } else if (searchArr[i].type === "number") {
-            findQuery[searchArr[i].value] = Number(searchValue);
-          } else if (searchArr[i].type === "objectID") {
-            const userIDs = await User.find({ userID: { $regex: searchValue, $options: "i" } }).distinct("_id");
-            findQuery[searchArr[i].value] = { $in: userIDs };
-          }
-          break;
-        }
-      }
-    }
-    // END: 검색 기능이 있을 경우
-
     // BEGIN: pagination 데이터
     const [adminItems, totalCount] = await Promise.all([
-      Sample.find(findQuery).sort(sortQuery).limit(limit).skip(req.skip).exec(),
-      Sample.countDocuments(findQuery),
+      Product.find(findQuery)
+        .sort(sortQuery)
+        .limit(limit)
+        .skip(req.skip)
+        .exec(),
+      Product.countDocuments(findQuery),
     ]);
+
     const pageCount = Math.ceil(totalCount / limit);
     const pages = paginate.getArrayPages(req)(10, pageCount, req.query.page);
     // END: pagination 데이터
 
-    // BEGIN: 엑셀 다운로드용 전체 데이터
-    const excelData = await Sample.find(findQuery).sort(sortQuery);
-    // END: 엑셀 다운로드용 전체 데이터
-
-    res.render("admin/adminSample", {
-      adminNameKo: "샘플 데이터",
-      adminLink: routes.adminSample,
-      sortCode,
-      sortArr,
-      limit,
-      searchArr,
-      searchCode,
-      searchValue,
+    res.render("admin/adminProduct", {
+      adminNameKo: "상품 데이터",
+      adminLink: routes.adminProduct,
       adminItems,
       totalCount,
       pageCount,
       pages,
-      excelData,
+      limit,
     });
   } catch (err) {
     console.log(err);
     res.send(
       `<script>alert("오류가 발생했습니다:\\r\\n${err}");\
-      location.href="${routes.home}"</script>`
+        location.href="${routes.home}"</script>`
     );
   }
 };
-export const getAdminSampleCrud = async (req, res) => {
+
+// ! CRUD
+export const getAdminProductCrud = async (req, res) => {
   try {
     const {
       params: { crudType },
@@ -361,19 +334,10 @@ export const getAdminSampleCrud = async (req, res) => {
     } = req;
     let adminItem;
     if (itemID) {
-      adminItem = await Sample.findById(itemID).populate([
-        {
-          path: "userID",
-          model: "User",
-        },
-        {
-          path: "userIDs",
-          model: "User",
-        },
-      ]);
+      adminItem = await Product.findById(itemID);
     }
-    const adminNameKo = "샘플 데이터";
-    const adminNameEn = "Sample";
+    const adminNameKo = "상품 데이터";
+    const adminNameEn = "Product";
     const adminLink = routes[`admin${adminNameEn}`];
     const updateBool = crudType === "update";
     const users = await User.find();
@@ -385,21 +349,22 @@ export const getAdminSampleCrud = async (req, res) => {
       adminItem,
       users,
     };
+
     if (crudType !== "delete") {
       res.render(`admin/admin${adminNameEn}CRUD`, renderObj);
     } else {
-      await Sample.findByIdAndDelete(itemID);
+      await Product.findByIdAndDelete(itemID);
       res.send(`<script>location.href="${routes.admin}${adminLink}"</script>`);
     }
   } catch (err) {
     console.log(err);
     res.send(
       `<script>alert("오류가 발생했습니다:\\r\\n${err}");\
-      location.href="${routes.home}"</script>`
+        location.href="${routes.home}"</script>`
     );
   }
 };
-export const postAdminSampleCrud = async (req, res) => {
+export const postAdminProductCrud = async (req, res) => {
   try {
     const {
       params: { crudType },
@@ -407,8 +372,8 @@ export const postAdminSampleCrud = async (req, res) => {
       file,
     } = req;
 
-    const adminNameKo = "샘플 데이터";
-    const adminNameEn = "Sample";
+    const adminNameKo = "상품 데이터";
+    const adminNameEn = "Product";
     const adminLink = routes[`admin${adminNameEn}`];
     body.updatedAt = moment(new Date()).tz("Asia/Seoul");
     let adminItem;
@@ -417,25 +382,151 @@ export const postAdminSampleCrud = async (req, res) => {
       // 등록
       body.thumbnail = file ? file.location : null;
       body.createdAt = moment(new Date()).tz("Asia/Seoul");
-      adminItem = await Sample.create(body);
+      adminItem = await Product.create(body);
     } else if (crudType === "update") {
       // 수정
       const { itemID } = body;
-      adminItem = await Sample.findById(itemID);
+      adminItem = await Product.findById(itemID);
       body.thumbnail = file ? file.location : adminItem.thumbnail;
-      await Sample.findByIdAndUpdate(itemID, body);
+      await Product.findByIdAndUpdate(itemID, body);
     }
 
     // 공통
     res.send(
-      `<script>alert("${adminNameKo}가 ${crudType === "update" ? "수정" : "등록"}되었습니다.");\
-      location.href="${routes.admin}${adminLink}/update?itemID=${adminItem._id}"</script>`
+      `<script>alert("${adminNameKo}가 ${
+        crudType === "update" ? "수정" : "등록"
+      }되었습니다.");\
+        location.href="${routes.admin}${adminLink}"</script>`
     );
   } catch (err) {
     console.log(err);
     res.send(
       `<script>alert("오류가 발생했습니다:\\r\\n${err}");\
-      location.href="${routes.home}"</script>`
+        location.href="${routes.home}"</script>`
+    );
+  }
+};
+
+// 관리자 매거진 관리
+export const adminMagazine = async (req, res) => {
+  try {
+    const {
+      query: { limit },
+    } = req;
+
+    // findQuery default 값
+    const findQuery = {};
+    // sortQuery default 값
+    let sortQuery = { createdAt: -1 };
+
+    // BEGIN: pagination 데이터
+    const [adminItems, totalCount] = await Promise.all([
+      Magazine.find(findQuery)
+        .sort(sortQuery)
+        .limit(limit)
+        .skip(req.skip)
+        .exec(),
+      Magazine.countDocuments(findQuery),
+    ]);
+
+    const pageCount = Math.ceil(totalCount / limit);
+    const pages = paginate.getArrayPages(req)(10, pageCount, req.query.page);
+    // END: pagination 데이터
+
+    res.render("admin/adminMagazine", {
+      adminNameKo: "매거진 데이터",
+      adminLink: routes.adminMagazine,
+      adminItems,
+      totalCount,
+      pageCount,
+      pages,
+      limit,
+    });
+  } catch (err) {
+    console.log(err);
+    res.send(
+      `<script>alert("오류가 발생했습니다:\\r\\n${err}");\
+        location.href="${routes.home}"</script>`
+    );
+  }
+};
+
+// ! CRUD
+export const getAdminMagazineCrud = async (req, res) => {
+  try {
+    const {
+      params: { crudType },
+      query: { itemID },
+    } = req;
+    let adminItem;
+    if (itemID) {
+      adminItem = await Magazine.findById(itemID);
+    }
+    const adminNameKo = "매거진 데이터";
+    const adminNameEn = "Magazine";
+    const adminLink = routes[`admin${adminNameEn}`];
+    const updateBool = crudType === "update";
+    const users = await User.find();
+    const renderObj = {
+      crudType,
+      adminNameKo,
+      adminLink,
+      updateBool,
+      adminItem,
+      users,
+    };
+
+    if (crudType !== "delete") {
+      res.render(`admin/admin${adminNameEn}CRUD`, renderObj);
+    } else {
+      await Magazine.findByIdAndDelete(itemID);
+      res.send(`<script>location.href="${routes.admin}${adminLink}"</script>`);
+    }
+  } catch (err) {
+    console.log(err);
+    res.send(
+      `<script>alert("오류가 발생했습니다:\\r\\n${err}");\
+        location.href="${routes.home}"</script>`
+    );
+  }
+};
+export const postAdminMagazineCrud = async (req, res) => {
+  try {
+    const {
+      params: { crudType },
+      body,
+    } = req;
+
+    console.log("req.Body : ", req.body);
+    console.log("body :", body);
+
+    const adminNameKo = "매거진 데이터";
+    const adminNameEn = "Magazine";
+    const adminLink = routes[`admin${adminNameEn}`];
+    body.updatedAt = moment(new Date()).tz("Asia/Seoul");
+
+    if (crudType === "create") {
+      // 등록
+      body.createdAt = moment(new Date()).tz("Asia/Seoul");
+      await Magazine.create(body);
+    } else if (crudType === "update") {
+      // 수정
+      const { itemID } = body;
+      await Magazine.findByIdAndUpdate(itemID, body);
+    }
+
+    // 공통
+    res.send(
+      `<script>alert("${adminNameKo}가 ${
+        crudType === "update" ? "수정" : "등록"
+      }되었습니다.");\
+        location.href="${routes.admin}${adminLink}"</script>`
+    );
+  } catch (err) {
+    console.log(err);
+    res.send(
+      `<script>console.log("오류가 발생했습니다: ",${err});\
+        location.href="${routes.home}"</script>`
     );
   }
 };
