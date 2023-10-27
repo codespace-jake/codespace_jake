@@ -549,56 +549,64 @@ export const postAdminMagazineCrud = async (req, res) => {
   }
 };
 
-export const createDummyData = async (req, res) => {
-  //category 목록 = [패션의류/잡화, 뷰티, 주방용품,생활용품,가전디지털,스포츠레저,식품,자동차용품,완구/취미,반려동물용품]
-  const dummyData = [
-    {
-      thumbnail:
-        "https://codespace-bentley.s3.ap-northeast-2.amazonaws.com/sample/1698309817684food01.jpeg",
-      category: "식품",
-      brand: "식품1",
-      name: "닥터톡스 6개월치",
-      description: "이거먹으면 타르가 씻겨나가요",
-      price: 1440000,
-      saleRatio: 0,
-    },
-    {
-      thumbnail:
-        "https://codespace-bentley.s3.ap-northeast-2.amazonaws.com/sample/1698309817684food01.jpeg",
-      category: "식품",
-      brand: "식품2",
-      name: "닥터톡스 6개월치",
-      description: "이거먹으면 타르가 씻겨나가요",
-      price: 1440000,
-      saleRatio: 0,
-    },
-    {
-      thumbnail:
-        "https://codespace-bentley.s3.ap-northeast-2.amazonaws.com/sample/1698309817684food01.jpeg",
-      category: "식품",
-      brand: "식품3",
-      name: "닥터톡스 6개월치",
-      description: "이거먹으면 타르가 씻겨나가요",
-      price: 1440000,
-      saleRatio: 0,
-    },
-    {
-      thumbnail:
-        "https://codespace-bentley.s3.ap-northeast-2.amazonaws.com/sample/1698309817684food01.jpeg",
-      category: "식품",
-      brand: "식품4",
-      name: "닥터톡스 6개월치",
-      description: "이거먹으면 타르가 씻겨나가요",
-      price: 1440000,
-      saleRatio: 0,
-    },
+/**
+ * brandArr에 brand의 리스트들을 입력하고 주소창에 /admin/dummy를 입력하면 DB에 더미데이터들이 업데이트 되는 함수
+ */
+export const createDummyData = async (_, res) => {
+  //- BEGIN: model의 schema대로 dummyData Object 선언
+  //- category 목록 = [패션의류/잡화, 뷰티, 주방용품,생활용품,가전디지털,스포츠레저,식품,자동차용품,완구/취미,반려동물용품]
+  const dummyData = {
+    thumbnail:
+      "https://codespace-bentley.s3.ap-northeast-2.amazonaws.com/sample/1698309817684food01.jpeg",
+    category: "식품",
+    brand: "",
+    name: "",
+    description: "이거먹으면 타르가 씻겨나가요",
+    price: 1440000,
+    saleRatio: 0,
+  };
+  //- END: dummyData Object
+
+  //- FIXME: brandNameArr의 배열안에 브랜드의 리스트대로 dummyData.brand가 수정됨
+  const brandArr = [
+    "맛난 닥터톡스",
+    "건강한 닥터톡스",
+    "강동 닥터톡스",
+    "전주 닥터톡스",
+    "문정 닥터톡스",
   ];
 
+  //- BEGIN: dummyData.name의 커스텀을 추가하여 brandNameArr배열 생성
+  const brandAndNameArr = [];
+  for (let i = 0; i < brandArr.length; i++) {
+    const label = brandArr[i];
+    const data = {
+      brand: `${label}`,
+      name: `닥터톡스 ${i + 1}호`,
+    };
+    brandAndNameArr.push(data);
+  }
+  //- END: brandAndNameArr Object
+
   try {
-    for (const data of dummyData) {
+    // - BEGIN: 얉은 복사를 통한 DummyData Update
+    const updatedDummyDataArr = [];
+    brandAndNameArr.forEach((item) => {
+      const updateDummyData = {
+        ...dummyData,
+        brand: item.brand,
+        name: item.name,
+      };
+      updatedDummyDataArr.push(updateDummyData);
+    });
+    //- END: updatedDummyDateArr Object
+
+    //- BEGIN: 더미데이터의 array를 순회하며 DB에 업데이트
+    for (const data of updatedDummyDataArr) {
       await Product.create(data);
     }
-    res.send("Dummy data created successfully.");
+    //- END: Create DB Document
+    res.send("쨔란 더미데이터 생성완료! 🤡");
   } catch (error) {
     console.error("Error creating dummy data:", error);
     res.status(500).send("Failed to create dummy data.");
