@@ -34,6 +34,9 @@ const ADMIN_MAGAZINE = "/magazine";
 // API
 const API = "/api";
 
+//Dummy Data upload용 (test)
+const DUMMY = "/dummy";
+
 const routes = {
   // Global
   home: HOME,
@@ -70,6 +73,9 @@ const routes = {
 
   // API
   api: API,
+
+  //Dummy Data upload용 (test)
+  dummy: DUMMY,
 };
 
 export default routes;

@@ -548,3 +548,59 @@ export const postAdminMagazineCrud = async (req, res) => {
     );
   }
 };
+
+export const createDummyData = async (req, res) => {
+  //category 목록 = [패션의류/잡화, 뷰티, 주방용품,생활용품,가전디지털,스포츠레저,식품,자동차용품,완구/취미,반려동물용품]
+  const dummyData = [
+    {
+      thumbnail:
+        "https://codespace-bentley.s3.ap-northeast-2.amazonaws.com/sample/1698309817684food01.jpeg",
+      category: "식품",
+      brand: "식품1",
+      name: "닥터톡스 6개월치",
+      description: "이거먹으면 타르가 씻겨나가요",
+      price: 1440000,
+      saleRatio: 0,
+    },
+    {
+      thumbnail:
+        "https://codespace-bentley.s3.ap-northeast-2.amazonaws.com/sample/1698309817684food01.jpeg",
+      category: "식품",
+      brand: "식품2",
+      name: "닥터톡스 6개월치",
+      description: "이거먹으면 타르가 씻겨나가요",
+      price: 1440000,
+      saleRatio: 0,
+    },
+    {
+      thumbnail:
+        "https://codespace-bentley.s3.ap-northeast-2.amazonaws.com/sample/1698309817684food01.jpeg",
+      category: "식품",
+      brand: "식품3",
+      name: "닥터톡스 6개월치",
+      description: "이거먹으면 타르가 씻겨나가요",
+      price: 1440000,
+      saleRatio: 0,
+    },
+    {
+      thumbnail:
+        "https://codespace-bentley.s3.ap-northeast-2.amazonaws.com/sample/1698309817684food01.jpeg",
+      category: "식품",
+      brand: "식품4",
+      name: "닥터톡스 6개월치",
+      description: "이거먹으면 타르가 씻겨나가요",
+      price: 1440000,
+      saleRatio: 0,
+    },
+  ];
+
+  try {
+    for (const data of dummyData) {
+      await Product.create(data);
+    }
+    res.send("Dummy data created successfully.");
+  } catch (error) {
+    console.error("Error creating dummy data:", error);
+    res.status(500).send("Failed to create dummy data.");
+  }
+};
