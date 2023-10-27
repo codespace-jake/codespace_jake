@@ -41,7 +41,7 @@ block content
                             //- BEGIN: Data table
                             .table-responsive
                               //- FIXME: 각 칼럼 width 적절히 조정 후 합계로 min-width 설정 必
-                              table.table.table-hover.table-striped.mb-0(style="min-width: 1450px;")
+                              table.table.table-hover.table-striped.mb-0(style="min-width: 1800px;")
                                 thead
                                   tr 
                                     //- FIXME: 데이터 동기화 必 170씩 분배
@@ -52,8 +52,9 @@ block content
                                     th(scope='col' style="width: 150px;") 브랜드
                                     th(scope='col' style="width: 150px;") 상품 제목
                                     th(scope='col' style="width: 150px;") 상품 설명
-                                    th(scope='col' style="width: 100px;") 원래 가격
+                                    th(scope='col' style="width: 100px;") 가격
                                     th(scope='col' style="width: 100px;") 할인률
+                                    th(scope='col' style="width: 100px;") 할인가
                                     th(scope='col' style="width: 160px;") 생성일
                                     th(scope='col' style="width: 160px;") 수정일
                                 tbody
@@ -75,8 +76,9 @@ block content
                                       td.ellipsis__td(scope='col' style="width: 200px;")=item.brand
                                       td.ellipsis__td(scope='col' style="width: 200px;")=item.name
                                       td.ellipsis__td(scope='col' style="width: 200px;")=item.description
-                                      td.ellipsis__td(scope='col' style="width: 200px;")=`${addComma(getDiscountPrice(item.price,item.saleRatio))}원`
-                                      td.ellipsis__td(scope='col' style="width: 300px;")=`${item.saleRatio}%`
+                                      td.ellipsis__td(scope='col' style="width: 300px;")=`${addComma(item.price)}원`
+                                      td.ellipsis__td(scope='col' style="width: 200px;")=`${item.saleRatio}%`
+                                      td.ellipsis__td(scope='col' style="width: 300px;")=`${addComma(getDiscountPrice(item.price,item.saleRatio))}원`
                                       td(scope='col' style="width: 150px;")=dateFormatYMDHm(item.createdAt)
                                       td(scope='col' style="width: 150px;")=dateFormatYMDHm(item.updatedAt)
                             //- END: Data table

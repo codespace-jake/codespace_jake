@@ -59,12 +59,12 @@ block content
                                 textarea#description.form-control(type='textarea' name="description" placeholder="내용을 입력하세요" cols=500 required)=`${updateBool ? adminItem.description : ""}`
                               .mb-2
                                 label.form-label.fw-bold(for='#price') 가격
-                                label.form-label.text-danger.fw-bold &nbsp;&nbsp;[샘플의 가격으로 숫자만 입력 가능합니다]
-                                input#price.form-control(type='number' name="price" value=`${updateBool ? adminItem.price : ""}` placeholder="가격를 입력하세요" required)
+                                label.form-label.text-danger.fw-bold &nbsp;&nbsp;[상품의 가격으로 숫자만 입력 가능합니다]
+                                input#price.form-control(type='number' name="price" value=`${updateBool ? adminItem.price : ""}` min='1' placeholder="가격를 입력하세요" required)
                               .mb-2
                                 label.form-label.fw-bold(for='#saleRatio') 할인률
-                                label.form-label.text-danger.fw-bold &nbsp;&nbsp;[샘플의 할인율로 숫자만 입력 가능합니다]
-                                input#saleRatio.form-control(type='number' name="saleRatio" value=`${updateBool ? adminItem.saleRatio : ""}` placeholder="할인률을 입력하세요" required)
+                                label.form-label.text-danger.fw-bold &nbsp;&nbsp;[상품의 할인율로 숫자만 입력 가능합니다]
+                                input#saleRatio.form-control(type='number' name="saleRatio" value=`${updateBool ? adminItem.saleRatio : ""}` min='1' max='100' placeholder="할인률을 입력하세요" required)
                               .row.mt-4
                                 .col-12
                                   a.btn.btn-secondary.waves-effect.waves-light.text-white.me-sm-3(onclick="history.go(-1);") 뒤로가기
