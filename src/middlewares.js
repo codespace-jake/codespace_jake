@@ -79,9 +79,11 @@ export const localsMiddleware = (req, res, next) => {
       return number.toString().replace(regexp, ",");
     },
     // 할인률 계산
-    //! 추가적으로 소숫점 버리게 만들고 0원 미만 안되게 로직추가 해야함
     getDiscountPrice: (price, saleRatio) => {
-      return price - price * (saleRatio / 100);
+      let discountPrice = price - price * (saleRatio / 100);
+      discountPrice = Math.floor(discountPrice);
+
+      return discountPrice;
     },
     // 날짜 형식 변환
     dateFormatYMD: (date) => moment(date).tz("Asia/Seoul").format("YYYY-MM-DD"),
