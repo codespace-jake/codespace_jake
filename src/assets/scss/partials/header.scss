@@ -1,0 +1,45 @@
+header.header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+
+  .header-flex {
+    width: 1250px;
+
+    nav.navbar-wrap {
+      padding: 20px 40px;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .logo-wrap {
+        display: flex;
+        flex-direction: row;
+        gap: 4px;
+
+        h1.main-logo-title {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 12px;
+          font-weight: 500;
+        }
+      }
+
+      .header-menu-wrap {
+        display: flex;
+        gap: 24px;
+
+        a.header-menu-home {
+          font-size: 28px;
+          font-weight: 500;
+        }
+        a.header-menu-product {
+          font-size: 28px;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}

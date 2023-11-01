@@ -14,3 +14,9 @@ export const home = async (req, res) => {
 };
 
 export const anotherController = () => {};
+
+// 상품 Product
+
+export const product = async (req, res) => {
+  res.render("product");
+};
