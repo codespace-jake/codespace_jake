@@ -19,6 +19,7 @@ import {
   getAdminMagazineCrud,
   postAdminMagazineCrud,
   createDummyData,
+  salePriceUpdate,
 } from "../controllers/adminController";
 import { onlyAdmin, uploadSampleImg } from "../middlewares";
 
@@ -94,6 +95,6 @@ adminRouter.post(
   postAdminMagazineCrud
 );
 
-adminRouter.get(`${routes.dummy}`, createDummyData);
+adminRouter.get(`${routes.dummy}`, salePriceUpdate);
 
 export default adminRouter;

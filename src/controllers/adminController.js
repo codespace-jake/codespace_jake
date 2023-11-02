@@ -612,3 +612,26 @@ export const createDummyData = async (_, res) => {
     res.status(500).send("Failed to create dummy data.");
   }
 };
+
+// db salePrice Update
+export const salePriceUpdate = async (req, res) => {
+  try {
+    const product = await Product.find({});
+    product.forEach(async (schema) => {
+      if (!schema.salePrice) {
+        const discountPrice =
+          schema.price - schema.price * (schema.saleRatio / 100);
+        const salePrice = Math.floor(discountPrice);
+        await Product.updateOne(
+          { _id: schema._id },
+          { $set: { salePrice: salePrice } }
+        );
+      }
+    });
+
+    res.send("쨔란 더미데이터 생성완료! 🤡");
+  } catch (error) {
+    console.error("Error creating dummy data:", error);
+    res.status(500).send("Failed to create dummy data.");
+  }
+};
