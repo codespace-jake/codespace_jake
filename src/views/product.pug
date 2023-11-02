@@ -1,6 +1,31 @@
 extends layouts/main
 
 block content
-  .home__page#home__page
-    input#test(type="text")
-    h2#test__h2 test1234
+  .product-container
+    .product-category-header
+      .product-list-title 
+        p 상품
+      .search-sorting
+        ul.sorting-order-options
+          each sortItem, index in sortArr
+            if index !== 0
+              span.bg-label-secondary &nbsp;&nbsp;|&nbsp;&nbsp;
+            li
+              a.sorting__item-link.bg-label-secondary(href=`?sort=${sortItem.code}` class=`${sortItem.code === sortCode ? "bg-label-primary fw-bold" : ""}`)=sortItem.title
+    .product-badge-container
+      each item, index in adminItems       
+        .product-badge-wrap
+          img.badge-img(src=item.thumbnail)
+          span.product-info=`[${item.brand}]` + ' ' + `${item.name}`
+          p.description=item.description
+            - const salePrice = item.saleRatio !== 0 ? getDiscountPrice(item.price,item.saleRatio) : item.price  
+            if item.saleRatio !== 0 
+              .price-wrap
+                p.sale-product-price=`${addComma(item.price)}원`
+                .priceInfo
+                  p.saleRatio=`${item.saleRatio}%`
+                  p.salePrice=`${addComma(getDiscountPrice(item.price,item.saleRatio))}원`
+            else
+              .price-wrap
+                p.product-price=`${addComma(item.price)}원`
+
