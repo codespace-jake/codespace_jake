@@ -18,7 +18,7 @@ block content
           img.badge-img(src=item.thumbnail)
           span.product-info=`[${item.brand}]` + ' ' + `${item.name}`
           p.description=item.description
-            - const salePrice = item.saleRatio !== 0 ? getDiscountPrice(item.price,item.saleRatio) : item.price  
+            //- - const salePrice = item.saleRatio !== 0 ? getDiscountPrice(item.price,item.saleRatio) : item.price  
             if item.saleRatio !== 0 
               .price-wrap
                 p.sale-product-price=`${addComma(item.price)}원`
@@ -28,4 +28,30 @@ block content
             else
               .price-wrap
                 p.product-price=`${addComma(item.price)}원`
-
+            if item.spaceOnly 
+              img.space-only-badge(src="/assets/img/products/space-only-badge.png" alt='')
+    //- BEGIN: Pagination
+    #pagination__flex
+      if adminItems.length !== 0
+        nav(aria-label="Page navigation")
+          ul.pagination
+            li.page-item.first
+              a.page-link.waves-effect(href=`?page=1&limit=${limit}` aria-label="First")
+                i.ti.ti-chevrons-left.ti-xs
+            li.page-item.prev
+              a.page-link.waves-effect(href=paginate.href(true) aria-label="Previous")
+                i.ti.ti-chevron-left.ti-xs
+            each page in pages
+              if paginate.page === page.number
+                li.page-item.active(aria-current='page')
+                  a.page-link.waves-effect(href=page.url)=page.number
+              else
+                li.page-item
+                  a.page-link.waves-effect(href=page.url)=page.number
+            li.page-item.next
+              a.page-link.waves-effect(href=`${paginate.hasNextPages(pageCount) ? paginate.href() : ""}` aria-label="Next")
+                i.ti.ti-chevron-right.ti-xs
+            li.page-item.last
+              a.page-link.waves-effect(href=`?page=${pageCount}&limit=${limit}` aria-label="Last")
+                i.ti.ti-chevrons-right.ti-xs
+    //- END: Pagination

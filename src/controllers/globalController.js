@@ -32,8 +32,8 @@ export const product = async (req, res) => {
 
     // BEGIN: 분류 기능이 있을 경우
     const sortArr = [
-      { code: "0", title: "가격 높은 순", value: "salePrice", order: 1 },
-      { code: "1", title: "가격 낮은 순", value: "salePrice", order: -1 },
+      { code: "0", title: "가격 높은 순", value: "salePrice", order: -1 },
+      { code: "1", title: "가격 낮은 순", value: "salePrice", order: 1 },
       { code: "2", title: "최신순", value: "createdAt", order: -1 },
       { code: "3", title: "이름순", value: "name", order: 1 },
     ];
@@ -59,8 +59,8 @@ export const product = async (req, res) => {
       Product.countDocuments(findQuery),
     ]);
 
-    // const pageCount = Math.ceil(totalCount / limit);
-    // const pages = paginate.getArrayPages(req)(10, pageCount, req.query.page);
+    const pageCount = Math.ceil(totalCount / limit);
+    const pages = paginate.getArrayPages(req)(10, pageCount, req.query.page);
     // END: pagination 데이터
 
     res.render("product", {
@@ -69,10 +69,10 @@ export const product = async (req, res) => {
       adminItems,
       sortArr,
       sortCode,
-      // totalCount,
-      // pageCount,
-      // pages,
-      // limit,
+      totalCount,
+      pageCount,
+      pages,
+      limit,
     });
   } catch (err) {
     console.log(err);

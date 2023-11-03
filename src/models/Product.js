@@ -26,6 +26,7 @@ const sampleDataSchema = new Schema(
     price: Number,
     saleRatio: Number,
     salePrice: Number,
+    spaceOnly: Boolean,
     // inOnly: String,
   },
   { timestamps: true }
