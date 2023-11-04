@@ -5,6 +5,9 @@ header.header#header
         h1.main-logo-title 코드스페이스
         img.main-logo-img(src="/assets/img/branding/logo.png" width="28px" height="28px" alt='로고')
       .header-menu-wrap 
-        a.header-menu-home(href=routes.home) 홈
-        a.header-menu-product(href=routes.adminProduct) 상품
-
+        a.header-menu-items(href=routes.home) 홈
+        a.header-menu-items(href=routes.adminProduct) 상품
+        if isLogin
+          a.header-menu-items(href=routes.logout) 로그아웃
+        else
+          a.header-menu-items(href=routes.login) 로그인

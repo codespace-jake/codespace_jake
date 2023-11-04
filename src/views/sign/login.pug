@@ -1,0 +1,38 @@
+extends ../layouts/adminMain
+
+block content
+  body
+    main.admin__main
+      .admin__page#admin__login-page
+        .authentication-wrapper.authentication-cover.authentication-bg
+          .authentication-inner.row.d-flex.justify-content-center
+            .d-flex.col-12.col-lg-5.align-items-center.p-sm-5.p-4
+              .w-px-400.mx-auto
+                h3.mb-4.fw-bold 로그인 👋
+                form.mb-3(action=`${routes.login}` method="post")
+                  .mb-3
+                    label.form-label(for="userID") 아이디
+                    input#userID.form-control(type="text" name="userID" placeholder="아이디" autofocus tabindex="1" required)
+                  .mb-3.form-password-toggle
+                    .d-flex.justify-content-between
+                      label.form-label(for="password") 비밀번호
+                    .input-group.input-group-merge
+                      input#password.form-control(type="password" name="password" placeholder="············" aria-describedby="password" tabindex="2" autocomplete required)
+                      span.input-group-text.cursor-pointer
+                        i.ti.ti-eye-off
+                  button.btn.btn-primary.d-grid.w-100(type="submit" tabindex="3") 로그인
+                p.text-center
+                  span 계정이 없으신가요?
+                  a(href=`${routes.adminRegister}`)
+                    span &nbsp;계정 생성하기
+                .border-top.border-light.border-2.pt-4
+                  a.border.rounded.d-grid.w-100(href="/")
+                    .p-2.d-flex.justify-content-center.text-bg-warning KaKao로 시작하기
+
+        //- END: Content
+    //- BEGIN: Repeated scripts
+    include ../admin/adminScripts
+    //- END: Repeated scripts
+    //- BEGIN: Page JS
+    script(src='/assets/js/pages-auth.js')
+    //- END: Page JS
