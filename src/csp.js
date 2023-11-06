@@ -88,6 +88,7 @@ module.exports = csp({
       `https://*.google-analytics.com/`,
       `https://*.ckeditor.com/`,
       `https://*.youtube.com/`,
+      `http://*.daumcdn.net/`,
     ],
     // object - src 'self';
 

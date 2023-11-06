@@ -2,7 +2,7 @@ import passport from "passport";
 import dotenv from "dotenv";
 import moment from "moment";
 import routes from "../routes";
-import User from "../models/User";
+import User from "../models/NormalUser";
 
 const KakaoStrategy = require("passport-kakao").Strategy;
 const InstagramStrategy = require("passport-instagram").Strategy;
@@ -13,57 +13,48 @@ const YoutubeV3Strategy = require("passport-youtube-v3").Strategy;
 
 dotenv.config();
 
-passport.serializeUser((user, done) => {
-  console.log("serialize");
-  done(null, user);
-});
-passport.deserializeUser((user, done) => {
-  console.log("deserialize");
-  done(null, user);
-});
+// passport.serializeUser((user, done) => {
+//   console.log("serialize");
+//   done(null, user);
+// });
+// passport.deserializeUser((user, done) => {
+//   console.log("deserialize");
+//   done(null, user);
+// });
 
 // 카카오톡 로그인
 passport.use(
   new KakaoStrategy(
     {
-      clientID: process.env.KAKAO_APIKEY,
+      clientID: process.env.KAKAO_CLIENT_ID,
       clientSecret: "", // clientSecret을 사용하지 않는다면 넘기지 말거나 빈 스트링을 넘길 것
       callbackURL: `${process.env.SITE_DOMAIN}${routes.auth}${routes.authKakao}/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        console.log(profile);
-        // FIXME: profile 안에 필요한 정보 주석제거 후 사용. 미사용 정보는 제거 필수
-        const username = profile.username; // 이름
         const email = profile._json.kakao_account.email; // 이메일(필수정보로 변경은 kakao developer에서 사업자등록정보 적용 필수)
-        // const year = profile._json.kakao_account.birthyear; // 생년
-        // const birthAgreeBool = profile._json.kakao_account.gender_needs_agreement; // 생일 수집 동의 여부
-        // const birth = profile._json.kakao_account.birth; // 생일
-        // const gender = profile._json.kakao_account.gender; // 성별
-        // const age_range = profile._json.kakao_account.age_range; // 연령대
-        // const profileImgAgreeBool = profile._json.kakao_account.profile_image_needs_agreement; // 프로필 이미지 수집 동의 여부
-        // const profileImage = profile._json.properties.profile_image; // 프로필 이미지
-        // const phoneNumber = `0${profile._json.kakao_account.phone_number.split(" ")[1]}`; // 전화번호(필수정보로 변경은 ......)
 
         // 기존에 동일한 아이디의 유저가 존재하는지 체크
-        const existID = await User.findOne({ userID: profile._json.kakao_account.email });
+        const existID = await User.findOne({
+          userID: profile._json.kakao_account.email,
+        });
         const password = "kakaoLogin";
         let users;
+
         if (existID) {
-          users = existID;
-        } else {
-          users = await User({
-            userID: email,
-            // profileImg: !profileImgAgreeBool ? profileImage : "",
-            name: username,
-            role: "normal",
-            // gender: profile._json.kakao_account.has_gender && !profile._json.kakao_account.gender_needs_agreement ? profile._json.kakao_account.gender : "",
-            // birthYear: profile._json.kakao_account.birthyear,
-            // birthMonth: profile._json.kakao_account.has_birthday && !profile._json.kakao_account.birthday_needs_agreement ? profile._json.kakao_account.birthday.slice(0, 2) : "",
-            // birthDate: profile._json.kakao_account.has_birthday && !profile._json.kakao_account.birthday_needs_agreement ? profile._json.kakao_account.birthday.slice(2) : "",
-          });
-          await User.register(users, password);
+          return done(null, existID);
         }
+
+        users = await User({
+          userID: email,
+          role: "normal",
+          sosial: {
+            isSosial: true,
+            snsType: "kakao",
+          },
+        });
+        await User.register(users, password);
+
         return done(null, users);
       } catch (e) {
         console.log(e);
@@ -73,9 +64,10 @@ passport.use(
 );
 export const authKakao = passport.authenticate("kakao");
 export const authKakaoCallback = passport.authenticate("kakao", {
-  successRedirect: routes.home,
+  successRedirect: `${routes.home}?isLoggined=true`,
   failureRedirect: `${routes.auth}${routes.authKakao}/fail`,
 });
+
 export const authKakaoFail = (req, res) => {
   try {
     res.send(

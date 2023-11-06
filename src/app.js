@@ -14,7 +14,7 @@ import routes from "./routes";
 import globalRouter from "./routers/globalRouter";
 import userRouter from "./routers/userRouter";
 import apiRouter from "./routers/apiRouter";
-// import authRouter from "./routers/authRouter";
+import authRouter from "./routers/authRouter";
 import { localsMiddleware } from "./middlewares";
 import "./passport";
 import adminRouter from "./routers/adminRouter";
@@ -60,6 +60,7 @@ app.use(passport.session());
 
 app.use(localsMiddleware);
 
+app.use(routes.auth, authRouter);
 app.use(routes.home, globalRouter);
 app.use(routes.user, userRouter);
 app.use(routes.admin, adminRouter);
