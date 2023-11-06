@@ -3,7 +3,7 @@ extends ../layouts/adminMain
 block content
   body
     main.admin__main
-      .admin__page#admin__register-page
+      .admin__page#register-page
         .authentication-wrapper.authentication-cover.authentication-bg
           .authentication-inner.row.d-flex.justify-content-center
             .d-flex.col-12.col-lg-5.align-items-center.p-sm-5.p-4
@@ -11,21 +11,33 @@ block content
                 h3.mb-4.fw-bold 회원가입 🚀
                 form.mb-3(action=`${routes.adminRegister}` method="POST")
                   .mb-3
+                    label.form-label(for="name") 이름
+                    input#name.form-control(type="text" name="name" placeholder='이름' autofocus tabindex="1" required )
+                  .mb-3
                     label.form-label(for="userID") 아이디
-                    input#userID.form-control(type="text" name="userID" placeholder="아이디" autofocus tabindex="1" required)
+                    input#userID.form-control(type="text" name="userID" placeholder="아이디" aria-describedby="password" tabindex="2" autocomplete required)
                   .mb-3.form-password-toggle
                     label.form-label(for="password") 비밀번호
                     .input-group.input-group-merge
-                      input#password.form-control(type="password" name="password" placeholder="············" aria-describedby="password" tabindex="2" autocomplete required)
+                      input#password.form-control(type="password" name="password" placeholder="············" aria-describedby="password" tabindex="3" autocomplete required)
                       span.input-group-text.cursor-pointer
                         i.ti.ti-eye-off
                   .mb-3.form-password-toggle
                     label.form-label(for="password2") 비밀번호 확인
                     .input-group.input-group-merge
-                      input#password2.form-control(type="password" name="password2" placeholder="············" aria-describedby="password" tabindex="3" autocomplete required)
+                      input#password2.form-control(type="password" name="password2" placeholder="············" aria-describedby="password" tabindex="4" autocomplete required)
                       span.input-group-text.cursor-pointer
                         i.ti.ti-eye-off
-                  button.btn.btn-primary.d-grid.w-100(type="submit" tabindex="4") 회원가입
+                  .mb-3.form-address(style="position:relative")
+                    label(for="address__search-btn") 주소
+                    input#address__search-btn(type="button" value="우편번호 찾기" style="position:absolute; right:0;")                      
+                    input#address.form-control(type="text" name="address" placeholder="주소" aria-describedby="address" tabindex="5" required)
+                    label(for="detail-address" style="display:none")
+                    input#detail-address.form-control(type="text" name="detailAddress" placeholder="상세주소" aria-describedby="detailAddress" tabindex="6"  required)
+                  .mb-3.form-address
+                    label.form-label(for="phoneNum") 연락처
+                    input#phoneNum.form-control(type="text" name="phoneNum" placeholder="-를 포함해주세요." aria-describedby="phoneNum" tabindex="7" autocomplete maxlength="13" required)
+                  button.btn.btn-primary.d-grid.w-100(type="submit" tabindex="8") 회원가입
                 p.text-center
                   span 이미 계정이 있으신가요?
                   a(href=`${routes.login}`)
@@ -37,3 +49,4 @@ block content
     //- BEGIN: Page JS
     script(src='/assets/js/pages-auth.js')
     //- END: Page JS
+    script(src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js")

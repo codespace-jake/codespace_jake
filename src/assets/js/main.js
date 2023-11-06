@@ -4,6 +4,8 @@ import "./ckeditorControl";
 import "./headerControl";
 import "./homeControl";
 
+import "./daumPostCodeControl";
+
 // 관리자
 import "./adminSidebarControl";
 import "./adminExcelDownloadControl";
