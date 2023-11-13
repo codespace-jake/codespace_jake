@@ -1,5 +1,5 @@
 import passport from "passport";
-const KakaoStrategy = require("passport-kakao").Strategy;
+// const KakaoStrategy = require("passport-kakao").Strategy;
 
 import User from "./models/User";
 import normalUser from "./models/NormalUser";

@@ -230,6 +230,26 @@ export const postAdminRegister = async (req, res) => {
       addressInfo: addressInfo,
     };
 
+
+    // const checkLength = (value) => {
+    //   return value.length >= 4 && value.length <= 12
+    // }
+
+    // if(!checkLength(name)){
+    //   return res.send(
+    //     `<script>\
+    //     alert("아이디는 4~12글자만 적을 수 있습니다.");\
+    //     location.href="${routes.adminRegister}"\
+    //   </script>`
+    //   );
+    // }
+
+
+
+
+
+
+
     if (password !== password2) {
       return res.send(
         `<script>\

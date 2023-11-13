@@ -4,7 +4,7 @@ import "./ckeditorControl";
 import "./headerControl";
 import "./homeControl";
 
-import "./daumPostCodeControl";
+import "./registerControl";
 
 // 관리자
 import "./adminSidebarControl";
