@@ -15,7 +15,8 @@ block content
     .product-badge-container
       each item, index in adminItems       
         .product-badge-wrap
-          img.badge-img(src=item.thumbnail)
+          a.product-link(href=`${routes.adminProduct}/${item._id}`)
+            img.badge-img(src=item.thumbnail)
           span.product-info=`[${item.brand}]` + ' ' + `${item.name}`
           p.description=item.description
             //- - const salePrice = item.saleRatio !== 0 ? getDiscountPrice(item.price,item.saleRatio) : item.price  

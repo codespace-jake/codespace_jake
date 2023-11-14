@@ -5,6 +5,7 @@ import {
   getHome,
   postHome,
   product,
+  productDetail,
   getLogin,
   postLogin,
   getLogout,
@@ -20,6 +21,9 @@ globalRouter.get(routes.home, getHome);
 
 // 상품 Product
 globalRouter.get(routes.adminProduct, paginate.middleware(20, 50), product);
+
+// 상품 상세페이지
+globalRouter.get(`${routes.adminProduct}/:id([0-9a-f]{24})`, productDetail);
 
 // 로그인
 globalRouter.get(routes.login, getLogin);

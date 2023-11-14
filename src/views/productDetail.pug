@@ -1,0 +1,23 @@
+extends layouts/main
+
+block content
+  .product-container
+    .product-badge-container
+      each item, index in adminItems       
+        .product-badge-wrap
+         .test=items.brand
+        //-   span.product-info=`[${item.brand}]` + ' ' + `${item.name}`
+        //-   p.description=item.description
+        //-     //- - const salePrice = item.saleRatio !== 0 ? getDiscountPrice(item.price,item.saleRatio) : item.price  
+        //-     if item.saleRatio !== 0 
+        //-       .price-wrap
+        //-         p.sale-product-price=`${(item.price)}원`
+        //-         .priceInfo
+        //-           p.saleRatio=`${item.saleRatio}%`
+        //-           p.salePrice=`${addComma(getDiscountPrice(item.price,item.saleRatio))}원`
+        //-     else
+        //-       .price-wrap
+        //-         p.product-price=`${addComma(item.price)}원`
+        //-     if item.spaceOnly 
+        //-       img.space-only-badge(src="/assets/img/products/space-only-badge.png" alt='')
+

@@ -140,6 +140,42 @@ export const product = async (req, res) => {
   }
 };
 
+export const productDetail = async (req, res) => {
+  // try {
+  // let isLogin = false;
+  // if (req.user) {
+  //   isLogin = true;
+  // }
+
+  // console.log(req.params);
+
+  const { id } = req.params;
+
+  const adminItems = await Product.findOne({ _id: id });
+
+  res.render("productDetail", { adminItems });
+
+  //   res.render("productDetail", {
+  //     adminNameKo: "상품 데이터",
+  //     adminLink: routes.adminProduct,
+  //     adminItems,
+  //     sortArr,
+  //     sortCode,
+  //     totalCount,
+  //     pageCount,
+  //     pages,
+  //     limit,
+  //     isLogin,
+  //   });
+  // } catch (err) {
+  //   console.log(err);
+  //   res.send(
+  //     `<script>alert("오류가 발생했습니다:\\r\\n${err}");\
+  //       location.href="${routes.home}"</script>`
+  //   );
+  // }
+};
+
 // 로그인
 export const getLogin = (req, res) => {
   try {
@@ -230,7 +266,6 @@ export const postAdminRegister = async (req, res) => {
       addressInfo: addressInfo,
     };
 
-
     // const checkLength = (value) => {
     //   return value.length >= 4 && value.length <= 12
     // }
@@ -243,12 +278,6 @@ export const postAdminRegister = async (req, res) => {
     //   </script>`
     //   );
     // }
-
-
-
-
-
-
 
     if (password !== password2) {
       return res.send(

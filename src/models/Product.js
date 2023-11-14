@@ -11,7 +11,7 @@ const { Schema } = mongoose;
  * @property {string} description - 상품 설명
  * @property {number} price - 원래 가격
  * @property {number} saleRatio - 할인률
-//  * @property {string} inOnly - '오직 여기에서만 살 수있는 단독 상품'인가의 유무 , 추가예정
+ * @property {string} spaceOnly - '오직 여기에서만 살 수있는 단독 상품'인가의 유무
  * @property {mongoose.Types.ObjectId} userID - 사용자 ID 참조 (User 모델과 연결된 ObjectId)
  * @property {mongoose.Types.ObjectId[]} userIDs - 사용자 ID 배열 참조 (User 모델과 연결된 ObjectId 배열)
  */
@@ -26,8 +26,7 @@ const sampleDataSchema = new Schema(
     price: Number,
     saleRatio: Number,
     salePrice: Number,
-    spaceOnly: Boolean,
-    // inOnly: String,
+    spaceOnly: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
