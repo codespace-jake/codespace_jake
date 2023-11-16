@@ -141,39 +141,42 @@ export const product = async (req, res) => {
 };
 
 export const productDetail = async (req, res) => {
-  // try {
-  // let isLogin = false;
-  // if (req.user) {
-  //   isLogin = true;
-  // }
+  try {
+    let isLogin = false;
+    const { id } = req.params;
+    if (req.user) {
+      isLogin = true;
+    }
 
-  // console.log(req.params);
+    const productItem = await Product.findOne({ _id: id });
 
-  const { id } = req.params;
+    console.log("productItem : ", productItem);
 
-  const adminItems = await Product.findOne({ _id: id });
+    const salePrice = Math.floor(
+      productItem.price - productItem.price * (productItem.saleRatio / 100)
+    );
+    const point = Math.floor(salePrice * (5 / 100));
 
-  res.render("productDetail", { adminItems });
-
-  //   res.render("productDetail", {
-  //     adminNameKo: "상품 데이터",
-  //     adminLink: routes.adminProduct,
-  //     adminItems,
-  //     sortArr,
-  //     sortCode,
-  //     totalCount,
-  //     pageCount,
-  //     pages,
-  //     limit,
-  //     isLogin,
-  //   });
-  // } catch (err) {
-  //   console.log(err);
-  //   res.send(
-  //     `<script>alert("오류가 발생했습니다:\\r\\n${err}");\
-  //       location.href="${routes.home}"</script>`
-  //   );
-  // }
+    res.render("productDetail", {
+      adminNameKo: "상품 데이터",
+      adminLink: routes.adminProduct,
+      productItem,
+      point,
+      // sortArr,
+      // sortCode,
+      // totalCount,
+      // pageCount,
+      // pages,
+      // limit,
+      isLogin,
+    });
+  } catch (err) {
+    console.log(err);
+    res.send(
+      `<script>alert("오류가 발생했습니다:\\r\\n${err}");\
+        location.href="${routes.home}"</script>`
+    );
+  }
 };
 
 // 로그인

@@ -1,23 +1,96 @@
 extends layouts/main
 
 block content
-  .product-container
-    .product-badge-container
-      each item, index in adminItems       
-        .product-badge-wrap
-         .test=items.brand
-        //-   span.product-info=`[${item.brand}]` + ' ' + `${item.name}`
-        //-   p.description=item.description
-        //-     //- - const salePrice = item.saleRatio !== 0 ? getDiscountPrice(item.price,item.saleRatio) : item.price  
-        //-     if item.saleRatio !== 0 
-        //-       .price-wrap
-        //-         p.sale-product-price=`${(item.price)}원`
-        //-         .priceInfo
-        //-           p.saleRatio=`${item.saleRatio}%`
-        //-           p.salePrice=`${addComma(getDiscountPrice(item.price,item.saleRatio))}원`
-        //-     else
-        //-       .price-wrap
-        //-         p.product-price=`${addComma(item.price)}원`
-        //-     if item.spaceOnly 
-        //-       img.space-only-badge(src="/assets/img/products/space-only-badge.png" alt='')
+  .product__detail-container
+   .product__detail-wrap
+    .product-image-wrap
+      .product-image
+        img.main-image(sizes="(max-width:600px) 220px, 400px" src=`${productItem.thumbnail}` alt='')
+    .product-info
+      .product-title
+        p.title=`${productItem.brand} ${productItem.name}`
+        .rating-container
+          .rating__star-wrap
+            span.rating-star
+          p.review-number 189,300개 상품평 
+      if productItem.saleRatio !== 0 
+        .price-wrap
+          .cost-wrap
+            span.sale-ratio=`${productItem.saleRatio}%`
+            p#regular-price.sale-product-price(data-value=`${productItem.price}`)=`${addComma(productItem.price)}원`
+          .price-info
+            p#sale-price.sale-price(data-value=`${getDiscountPrice(productItem.price,productItem.saleRatio)}`)=`${addComma(getDiscountPrice(productItem.price,productItem.saleRatio))}원` 
+            span.per-price 스페이스할인가
+            img.space-only-badge(src="/assets/img/products/space-only-badge.png" alt='')
+      else
+        .price-wrap
+          p#regular-price.product-price=`${addComma(productItem.price)}원`
+      .delivery-info
+        em.delivery-title 무료배송
+        em.delivery-description <span class="green-text"><span class="text-bold">내일(금) 11/17</span> 도착 보장 </span>(8시간 28분 내 주문시 / 서울⋅경기 기준)
+      .cashback-point-wrap
+        .cashback-title 적립
+        .cashback-point
+          | 최대 #{point} 
+          span.underline 스페이스캐시
+          |  적립
+      .button-wrap
+        .counter-wrap
+          button#dec-value.counter-prev ∨
+          .counter-value
+            span.value-num 1
+          button#inc-value.counter-next ∧
+
+  script.
+    let count = 1;
+    let 레귤러곱해진값 = 0;
+    let 세일곱해진값 = 0; 
+    const value = document.querySelector('.value-num')
+    const incButton = document.querySelector('.counter-next')
+    const decButton = document.querySelector('.counter-prev')
+    const regularPrice = document.getElementById('regular-price')
+    const salePrice = document.getElementById('sale-price')
+
+      if(count === 1 ){
+      return decButton.style.cssText = 'backgrund'
+    }
+
+
+
+
+
+    const addComma =  (number) => {
+      const regexp = /\B(?=(\d{3})+(?!\d))/g;
+      return number.toString().replace(regexp, ",");
+    }
+
+    const updateValue = () =>{
+      value.innerText = count;
+      regularPrice.innerText = `${addComma(레귤러곱해진값)}원`
+      salePrice.innerText = `${addComma(세일곱해진값)}원`
+
+    }
+    const minus = () => {
+     if(count > 1){
+      --count;
+      레귤러곱해진값=count  *  regularPrice.dataset.value
+      세일곱해진값=count  *  salePrice.dataset.value
+     }
+      updateValue();
+    }
+    const plus = () => {
+      if(count >= 0) {
+      count++;
+      레귤러곱해진값= count  *  regularPrice.dataset.value
+      세일곱해진값= count  *  salePrice.dataset.value
+      }
+      updateValue();
+    }
+
+    incButton.addEventListener('click',plus)
+    decButton.addEventListener('click',minus)
+
+
+
+
 

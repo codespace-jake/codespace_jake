@@ -6,6 +6,8 @@ import "./homeControl";
 
 import "./registerControl";
 
+import "./kakaoMapControl";
+
 // 관리자
 import "./adminSidebarControl";
 import "./adminExcelDownloadControl";

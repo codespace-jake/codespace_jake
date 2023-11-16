@@ -18,6 +18,7 @@ module.exports = csp({
       `wss://*.channel.io`,
       `https://*.googletagmanager.com/`,
       `https://*.google-analytics.com/`,
+      `http://*.kakao.com/`,
     ],
 
     defaultSrc: [`'self'`, `https://*.wistia.com`, `https://*.wistia.net`],
@@ -38,6 +39,7 @@ module.exports = csp({
       `https://www.youtube.com`,
       `https://*.iamport.kr`,
       `http://*.map.daum.net`,
+      `http://*.kakao.com/`,
     ],
 
     imgSrc: [
@@ -54,6 +56,8 @@ module.exports = csp({
       `https://*.google-analytics.com/`,
       `https://picsum.photos/`,
       `https://*.picsum.photos/`,
+      `http://*.daumcdn.net/`,
+      // `https://t1.daumcdn.net/*`,
     ],
 
     mediaSrc: [
@@ -89,6 +93,7 @@ module.exports = csp({
       `https://*.ckeditor.com/`,
       `https://*.youtube.com/`,
       `http://*.daumcdn.net/`,
+      `http://*.kakao.com/`,
     ],
     // object - src 'self';
 
@@ -105,6 +110,7 @@ module.exports = csp({
       `https://*.googleapis.com`,
       `https://*.cloudflare.com`,
       `https://*.bootstrapcdn.com`,
+      `http://*.kakao.com/`,
     ],
 
     workerSrc: [`'self'`, `blob:`],
