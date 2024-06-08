@@ -40,6 +40,7 @@ module.exports = csp({
       `https://*.iamport.kr`,
       `http://*.map.daum.net`,
       `http://*.kakao.com/`,
+      `https://*.netlify.app/`,
     ],
 
     imgSrc: [
@@ -52,6 +53,7 @@ module.exports = csp({
       `https://cdn.glitch.com`, // 🎏
       `https://avatars0.githubusercontent.com`, // 🎏
       `https://*.s3.ap-northeast-2.amazonaws.com`,
+      `https://*.s3.ap-southeast-2.amazonaws.com`,
       `https://*.channel.io`,
       `https://*.google-analytics.com/`,
       `https://picsum.photos/`,
@@ -60,16 +62,7 @@ module.exports = csp({
       // `https://t1.daumcdn.net/*`,
     ],
 
-    mediaSrc: [
-      `'self'`,
-      `blob:`,
-      `data:`,
-      `https://*.wistia.com`,
-      `https://*.wistia.net`,
-      `https://embedwistia-a.akamaihd.net`,
-      `https://*.channel.io`,
-      `https://*.s3.ap-northeast-2.amazonaws.com`,
-    ],
+    mediaSrc: [`'self'`, `blob:`, `data:`, `https://*.wistia.com`, `https://*.wistia.net`, `https://embedwistia-a.akamaihd.net`, `https://*.channel.io`, `https://*.s3.ap-northeast-2.amazonaws.com`],
 
     scriptSrc: [
       `'self'`,

@@ -37,118 +37,108 @@ if (searchAddressInfo) {
       });
     });
 
-
     //유효성 검사
-    const name = $('#name')
-    const userID = $('#userID')
-    const button = $('.btn.btn-primary')
-    const password1 = $('#password')
-    const password2 = $('#password2')
-    const tel = $('#phoneNum')
-    const alarmName = $('.alarm__name')
-    const alarmID = $('.alarm__id')
-    const alarmPassword1 = $('.alarm__password')
-    const alarmPassword2 = $('.alarm__password2')
-
+    const name = $("#name");
+    const userID = $("#userID");
+    const button = $(".btn.btn-primary");
+    const password1 = $("#password");
+    const password2 = $("#password2");
+    const tel = $("#phoneNum");
+    const alarmName = $(".alarm__name");
+    const alarmID = $(".alarm__id");
+    const alarmPassword1 = $(".alarm__password");
+    const alarmPassword2 = $(".alarm__password2");
 
     const checkLength = (value) => {
-      return value.length >= 4 && value.length <= 12
-    }
-    
-    const checkNonKorean = (value) => {
-      const reg = /^[A-Za-z0-9]+$/;      
-      return reg.test(value)
-    }
+      return value.length >= 4 && value.length <= 12;
+    };
 
-    const checkName = (value) =>{
-      const reg= /^[가-힣]{2,6}$/
-      return reg.test(value)
-    }
+    const checkNonKorean = (value) => {
+      const reg = /^[A-Za-z0-9]+$/;
+      return reg.test(value);
+    };
+
+    const checkName = (value) => {
+      const reg = /^[가-힣]{2,6}$/;
+      return reg.test(value);
+    };
 
     const checkPassword = (value) => {
       const reg = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*?_]).{8,16}$/;
-      return reg.test(value)
-    }
+      return reg.test(value);
+    };
 
-
-
-
-//- 이름
-    const validateName = () =>{
-      if(checkName(name.val())){
-        alarmName.css('color','black')
-      }else{
-        button.prop('disabled',true)
-        alarmName.css('color','red')
+    //- 이름
+    const validateName = () => {
+      if (checkName(name.val())) {
+        alarmName.css("color", "black");
+      } else {
+        button.prop("disabled", true);
+        alarmName.css("color", "red");
       }
-      
-    }
-    name.on('input', validateName);
+    };
+    name.on("input", validateName);
 
-
-//- ID
-    const validateUserID = ()=>{
-      if(checkLength(userID.val()) && checkNonKorean(userID.val())){
-        alarmID.css('color','black')
-      }else{
-        button.prop('disabled',true)
-        alarmID.css('color','red')
+    //- ID
+    const validateUserID = () => {
+      if (checkLength(userID.val()) && checkNonKorean(userID.val())) {
+        alarmID.css("color", "black");
+      } else {
+        button.prop("disabled", true);
+        alarmID.css("color", "red");
       }
-    }
-    userID.on('input', validateUserID);
-    
-    
+    };
+    userID.on("input", validateUserID);
 
-//- 패스워드
+    //- 패스워드
     const validatePassword1 = () => {
-      if(checkPassword(password1.val())){
-        alarmPassword1.css('opacity','0')
-      }else{
-        button.prop('disabled',true)
-        alarmPassword1.css('opacity','1')
+      if (checkPassword(password1.val())) {
+        alarmPassword1.css("opacity", "0");
+      } else {
+        button.prop("disabled", true);
+        alarmPassword1.css("opacity", "1");
       }
-    }
-    password1.on('input', validatePassword1);
+    };
+    password1.on("input", validatePassword1);
 
-
-
-    const validatePassword2 = () =>{
-      if(password1.val() === password2.val()){
-        alarmPassword2.css('opacity','0')
-      }else{
-        button.prop('disabled',true)
-        alarmPassword2.css('opacity','1')
+    const validatePassword2 = () => {
+      if (password1.val() === password2.val()) {
+        alarmPassword2.css("opacity", "0");
+      } else {
+        button.prop("disabled", true);
+        alarmPassword2.css("opacity", "1");
       }
-    }
-    password2.on('input', validatePassword2);
+    };
+    password2.on("input", validatePassword2);
 
+    //- 전화번호
 
-//- 전화번호
- const insertHyphen = ()=> {
-  let inputValue = tel.val();
+    const insertHyphen = () => {
+      let inputValue = tel.val();
 
-  inputValue = inputValue.replace(/[^0-9]/g, "");
+      inputValue = inputValue.replace(/[^0-9]/g, "");
 
-  if (inputValue.length > 3) {
-    inputValue = inputValue.substring(0, 3) + "-" + inputValue.substring(3);
-  }
-
-  if (inputValue.length > 8) {
-    inputValue = inputValue.substring(0, 8) + "-" + inputValue.substring(8);
-  }
-
-  tel.val(inputValue);
- }
-  const test = () =>{
-    if(tel.val().length >= 13 ){
-        button.prop('disabled',false)
-        button.css('cursor','pointer')
-      }else{
-        button.prop('disabled',true)
+      if (inputValue.length > 3) {
+        inputValue = inputValue.substring(0, 3) + "-" + inputValue.substring(3);
       }
-  }
 
-  tel.on('input',()=>{insertHyphen(),test()})
-    
+      if (inputValue.length > 8) {
+        inputValue = inputValue.substring(0, 8) + "-" + inputValue.substring(8);
+      }
+
+      tel.val(inputValue);
+    };
+    const test = () => {
+      if (tel.val().length >= 13) {
+        button.prop("disabled", false);
+        button.css("cursor", "pointer");
+      } else {
+        button.prop("disabled", true);
+      }
+    };
+
+    tel.on("input", () => {
+      insertHyphen(), test();
+    });
   })();
 }

@@ -26,8 +26,7 @@ if (kakaoMap) {
           console.log("lat,lon:", lat, lon);
 
           var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-            message =
-              '<div style="padding:5px;">이렇게 메세지를 띄울수도 있어요</div>'; // 인포윈도우에 표시될 내용입니다
+            message = '<div style="padding:5px;">이렇게 메세지를 띄울수도 있어요</div>'; // 인포윈도우에 표시될 내용입니다
 
           // 마커와 인포윈도우를 표시합니다
           displayMarker(locPosition, message);

@@ -1,10 +1,32 @@
 import moment from "moment-timezone";
 import multer from "multer";
-import multerS3 from "multer-s3";
+// import multerS3 from "multer-s3";
+import multerS3 from "multer-s3-transform";
 import { S3Client } from "@aws-sdk/client-s3";
+import aws from "aws-sdk";
 import routes from "./routes";
+import path from "path";
+import sharp from "sharp";
 
-const s3 = new S3Client({
+// const s3 = new S3Client({
+//   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+//   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+//   region: "ap-northeast-2",
+// });
+
+// const multerSampleImg = multer({
+//   storage: multerS3({
+//     s3,
+//     acl: "public-read",
+//     bucket: "codespace-bentley", // FIXME: S3 버킷 생성 후 버킷명 맞춰주기
+//     key(req, file, cb) {
+//       cb(null, `sample/${Date.now() + file.originalname}`); // FIXME: S3 버킷 생성 후 `[폴더명]/${Date.now() + file.originalname}` 맞춰주기
+//     },
+//     contentType: multerS3.AUTO_CONTENT_TYPE,
+//   }),
+// });
+
+const s3 = new aws.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   region: "ap-northeast-2",
@@ -13,12 +35,22 @@ const s3 = new S3Client({
 const multerSampleImg = multer({
   storage: multerS3({
     s3,
-    acl: "public-read",
-    bucket: "codespace-bentley", // FIXME: S3 버킷 생성 후 버킷명 맞춰주기
-    key(req, file, cb) {
-      cb(null, `sample/${Date.now() + file.originalname}`); // FIXME: S3 버킷 생성 후 `[폴더명]/${Date.now() + file.originalname}` 맞춰주기
-    },
+    bucket: "codespace-jake", // FIXME: S3 버킷 생성 후 버킷명 맞춰주기
     contentType: multerS3.AUTO_CONTENT_TYPE,
+    shouldTransform: true,
+    transforms: [
+      {
+        id: "resized",
+        key(req, file, cb) {
+          cb(null, `sample/${Date.now() + file.originalname}`); // FIXME: S3 버킷 생성 후 `[폴더명]/${Date.now() + file.originalname}` 맞춰주기
+        },
+        transform: function (req, file, cb) {
+          cb(null, sharp().resize(247, 400)); // 이미지를 100x100 으로 리사이징
+        },
+      },
+    ],
+    // acl: "public-read",
+    acl: "public-read-write",
   }),
 });
 
@@ -26,7 +58,11 @@ const multerSampleDescImg = multer({
   storage: multerS3({
     s3,
     acl: "public-read",
-    bucket: "codespace-bentley", // FIXME: S3 버킷 생성 후 버킷명 맞춰주기
+    bucket: "codespace-jake", // FIXME: S3 버킷 생성 후 버킷명 맞춰주기
+    resize: {
+      width: 320,
+      height: 192,
+    },
     key(req, file, cb) {
       cb(null, `sample/desc/${Date.now() + file.originalname}`); // FIXME: S3 버킷 생성 후 `[폴더명]/${Date.now() + file.originalname}` 맞춰주기
     },
@@ -87,13 +123,10 @@ export const localsMiddleware = (req, res, next) => {
     },
     // 날짜 형식 변환
     dateFormatYMD: (date) => moment(date).tz("Asia/Seoul").format("YYYY-MM-DD"),
-    dateFormatYMDHm: (date) =>
-      moment(date).tz("Asia/Seoul").format("YYYY-MM-DD HH:mm"),
-    dateFormatYMDHms: (date) =>
-      moment(date).tz("Asia/Seoul").format("YYYY-MM-DD HH:mm:ss"),
+    dateFormatYMDHm: (date) => moment(date).tz("Asia/Seoul").format("YYYY-MM-DD HH:mm"),
+    dateFormatYMDHms: (date) => moment(date).tz("Asia/Seoul").format("YYYY-MM-DD HH:mm:ss"),
     // 해당하는 문자열 모두 치환
-    replaceAll: (str, searchStr, replaceStr) =>
-      str.split(searchStr).join(replaceStr),
+    replaceAll: (str, searchStr, replaceStr) => str.split(searchStr).join(replaceStr),
     // 배열 Random 섞기
     shuffleArray: (arr) => {
       for (let i = arr.length - 1; i > 0; i -= 1) {

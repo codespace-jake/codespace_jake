@@ -9,9 +9,7 @@ import Magazine from "../models/Magazine";
 export const getAdminLogin = (req, res) => {
   try {
     if (req.user) {
-      res.send(
-        `<script>location.href="${routes.admin}${routes.adminUser}"</script>`
-      );
+      res.send(`<script>location.href="${routes.admin}${routes.adminUser}"</script>`);
     } else {
       res.render("admin/adminLogin");
     }
@@ -44,9 +42,7 @@ export const postAdminLogin = (req, res, next) => {
           if (err) {
             next(e);
           }
-          res.send(
-            `<script>location.href="${routes.admin}${routes.adminUser}"</script>`
-          );
+          res.send(`<script>location.href="${routes.admin}${routes.adminUser}"</script>`);
         });
       }
     })(req, res, next);
@@ -63,9 +59,7 @@ export const postAdminLogin = (req, res, next) => {
 export const getAdminRegister = (req, res) => {
   try {
     if (req.user) {
-      res.send(
-        `<script>location.href="${routes.admin}${routes.adminUser}"</script>`
-      );
+      res.send(`<script>location.href="${routes.admin}${routes.adminUser}"</script>`);
     } else {
       res.render("admin/adminRegister");
     }
@@ -91,9 +85,7 @@ export const postAdminRegister = async (req, res) => {
         </script>`
       );
     } else if (users) {
-      res.send(
-        `<script>alert("이미 가입된 아이디 입니다.");history.go(-1);</script>`
-      );
+      res.send(`<script>alert("이미 가입된 아이디 입니다.");history.go(-1);</script>`);
     } else {
       try {
         body.createdAt = moment(new Date()).tz("Asia/Seoul");
@@ -208,14 +200,7 @@ export const adminUser = async (req, res) => {
     }
     // END: 검색 기능이 있을 경우
 
-    const [adminItems, totalCount] = await Promise.all([
-      User.find(findQuery)
-        .sort(sortQuery)
-        .limit(req.query.limit)
-        .skip(req.skip)
-        .exec(),
-      User.countDocuments(),
-    ]);
+    const [adminItems, totalCount] = await Promise.all([User.find(findQuery).sort(sortQuery).limit(req.query.limit).skip(req.skip).exec(), User.countDocuments()]);
     const pageCount = Math.ceil(totalCount / req.query.limit);
     const pages = paginate.getArrayPages(req)(10, pageCount, req.query.page);
 
@@ -269,9 +254,7 @@ export const adminUserDelete = async (req, res) => {
       params: { userID },
     } = req;
     await User.findByIdAndDelete(userID);
-    res.send(
-      `<script>location.href="${routes.admin}${routes.adminUser}"</script>`
-    );
+    res.send(`<script>location.href="${routes.admin}${routes.adminUser}"</script>`);
   } catch (err) {
     console.log(err);
     res.send(
@@ -294,14 +277,7 @@ export const adminProduct = async (req, res) => {
     let sortQuery = { createdAt: -1 };
 
     // BEGIN: pagination 데이터
-    const [adminItems, totalCount] = await Promise.all([
-      Product.find(findQuery)
-        .sort(sortQuery)
-        .limit(limit)
-        .skip(req.skip)
-        .exec(),
-      Product.countDocuments(findQuery),
-    ]);
+    const [adminItems, totalCount] = await Promise.all([Product.find(findQuery).sort(sortQuery).limit(limit).skip(req.skip).exec(), Product.countDocuments(findQuery)]);
 
     const pageCount = Math.ceil(totalCount / limit);
     const pages = paginate.getArrayPages(req)(10, pageCount, req.query.page);
@@ -396,24 +372,24 @@ export const postAdminProductCrud = async (req, res) => {
 
     if (crudType === "create") {
       // 등록
-      body.thumbnail = file ? file.location : null;
+      body.thumbnail = file ? file.transforms[0].location : null;
       body.createdAt = moment(new Date()).tz("Asia/Seoul");
       adminItem = await Product.create(body);
     } else if (crudType === "update") {
       // 수정
       const { itemID } = body;
       adminItem = await Product.findById(itemID);
-      body.thumbnail = file ? file.location : adminItem.thumbnail;
+      body.thumbnail = file ? file.transforms[0].location : adminItem.thumbnail;
       await Product.findByIdAndUpdate(itemID, body);
     }
 
-    console.log(body, "바디");
+    console.log(req.body, "바디");
+    console.log(file, "파일");
+    console.log(file.transforms[0].location, "파일2");
 
     // 공통
     res.send(
-      `<script>alert("${adminNameKo}가 ${
-        crudType === "update" ? "수정" : "등록"
-      }되었습니다.");\
+      `<script>alert("${adminNameKo}가 ${crudType === "update" ? "수정" : "등록"}되었습니다.");\
         location.href="${routes.admin}${adminLink}"</script>`
     );
   } catch (err) {
@@ -438,14 +414,7 @@ export const adminMagazine = async (req, res) => {
     let sortQuery = { createdAt: -1 };
 
     // BEGIN: pagination 데이터
-    const [adminItems, totalCount] = await Promise.all([
-      Magazine.find(findQuery)
-        .sort(sortQuery)
-        .limit(limit)
-        .skip(req.skip)
-        .exec(),
-      Magazine.countDocuments(findQuery),
-    ]);
+    const [adminItems, totalCount] = await Promise.all([Magazine.find(findQuery).sort(sortQuery).limit(limit).skip(req.skip).exec(), Magazine.countDocuments(findQuery)]);
 
     const pageCount = Math.ceil(totalCount / limit);
     const pages = paginate.getArrayPages(req)(10, pageCount, req.query.page);
@@ -535,9 +504,7 @@ export const postAdminMagazineCrud = async (req, res) => {
 
     // 공통
     res.send(
-      `<script>alert("${adminNameKo}가 ${
-        crudType === "update" ? "수정" : "등록"
-      }되었습니다.");\
+      `<script>alert("${adminNameKo}가 ${crudType === "update" ? "수정" : "등록"}되었습니다.");\
         location.href="${routes.admin}${adminLink}"</script>`
     );
   } catch (err) {
@@ -556,8 +523,7 @@ export const createDummyData = async (_, res) => {
   //- BEGIN: model의 schema대로 dummyData Object 선언
   //- category 목록 = [패션의류/잡화, 뷰티, 주방용품,생활용품,가전디지털,스포츠레저,식품,자동차용품,완구/취미,반려동물용품]
   const dummyData = {
-    thumbnail:
-      "https://codespace-bentley.s3.ap-northeast-2.amazonaws.com/sample/1698309817684food01.jpeg",
+    thumbnail: "https://codespace-bentley.s3.ap-northeast-2.amazonaws.com/sample/1698309817684food01.jpeg",
     category: "식품",
     brand: "",
     name: "",
@@ -568,13 +534,7 @@ export const createDummyData = async (_, res) => {
   //- END: dummyData Object
 
   //- FIXME: brandNameArr의 배열안에 브랜드의 리스트대로 dummyData.brand가 수정됨
-  const brandArr = [
-    "맛난 닥터톡스",
-    "건강한 닥터톡스",
-    "강동 닥터톡스",
-    "전주 닥터톡스",
-    "문정 닥터톡스",
-  ];
+  const brandArr = ["맛난 닥터톡스", "건강한 닥터톡스", "강동 닥터톡스", "전주 닥터톡스", "문정 닥터톡스"];
 
   //- BEGIN: dummyData.name의 커스텀을 추가하여 brandNameArr배열 생성
   const brandAndNameArr = [];
@@ -619,13 +579,9 @@ export const salePriceUpdate = async (req, res) => {
     const product = await Product.find({});
     product.forEach(async (schema) => {
       if (!schema.salePrice) {
-        const discountPrice =
-          schema.price - schema.price * (schema.saleRatio / 100);
+        const discountPrice = schema.price - schema.price * (schema.saleRatio / 100);
         const salePrice = Math.floor(discountPrice);
-        await Product.updateOne(
-          { _id: schema._id },
-          { $set: { salePrice: salePrice } }
-        );
+        await Product.updateOne({ _id: schema._id }, { $set: { salePrice: salePrice } });
       }
     });
 

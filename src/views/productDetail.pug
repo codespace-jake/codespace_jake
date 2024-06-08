@@ -34,13 +34,19 @@ block content
           | 최대 #{point} 
           span.underline 스페이스캐시
           |  적립
-      .button-wrap
-        .counter-wrap
-          button#dec-value.counter-prev ∨
-          .counter-value
-            span.value-num 1
-          button#inc-value.counter-next ∧
-
+      .button-container
+        .button-wrap
+          .counter-wrap
+            button#dec-value.counter-prev ∨
+            .counter-value
+             span.value-num 1
+            button#inc-value.counter-next ∧
+          .cart-button-wrap 
+            button.cart-button 
+              span 장바구니 담기
+          .purchase-button-wrap 
+            button.purchase-button
+              span 구매하기
   script.
     let count = 1;
     let 레귤러곱해진값 = 0;
@@ -50,14 +56,6 @@ block content
     const decButton = document.querySelector('.counter-prev')
     const regularPrice = document.getElementById('regular-price')
     const salePrice = document.getElementById('sale-price')
-
-      if(count === 1 ){
-      return decButton.style.cssText = 'backgrund'
-    }
-
-
-
-
 
     const addComma =  (number) => {
       const regexp = /\B(?=(\d{3})+(?!\d))/g;
@@ -70,16 +68,18 @@ block content
       salePrice.innerText = `${addComma(세일곱해진값)}원`
 
     }
-    const minus = () => {
-     if(count > 1){
-      --count;
+    const minus = (event) => {
+     if(count <= 1){
+     event.preventDefault();
+     return 
+     }
+      count--;
       레귤러곱해진값=count  *  regularPrice.dataset.value
       세일곱해진값=count  *  salePrice.dataset.value
-     }
       updateValue();
     }
     const plus = () => {
-      if(count >= 0) {
+      if(count >= 1) {
       count++;
       레귤러곱해진값= count  *  regularPrice.dataset.value
       세일곱해진값= count  *  salePrice.dataset.value

@@ -135,55 +135,82 @@
           }
         }
       }
-      .button-wrap {
+      .button-container {
         padding: 1rem 0;
 
-        .counter-wrap {
-          width: 80px;
-          position: relative;
-          border: 1px solid #ccc;
+        .button-wrap {
+          display: flex;
+          flex-flow: row nowrap;
+          gap: 12px;
+          // justify-content: space-between;
 
-          button.counter-prev {
-            font-size: 12px;
-            font-weight: bold;
-            width: 40px;
-            height: 25px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-          }
-          // button.counter-prev::after {
-          //   display: block;
-          //   content: "";
-          //   background-image: url("//img1a.coupangcdn.com/image/dragonstone/sdp/PCSDP_imageasset_171215-min.png");
-          //   position: absolute;
-          //   top: 50%;
-          //   left: 50%;
-          // }
-          .counter-value {
-            width: 40px;
-            height: 50px;
-            border-right: 1px solid #eee;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            span.value-num {
-              font-size: 16px;
+          .counter-wrap {
+            width: 80px;
+            position: relative;
+            border: 1px solid #ccc;
+
+            button.counter-prev {
+              font-size: 12px;
               font-weight: bold;
-              color: #111;
-              line-height: 25px;
+              width: 40px;
+              height: 25px;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              z-index: 1;
+            }
+
+            .counter-value {
+              width: 40px;
+              height: 50px;
+              border-right: 1px solid #eee;
+              text-align: center;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              span.value-num {
+                font-size: 16px;
+                font-weight: bold;
+                color: #111;
+                line-height: 25px;
+              }
+            }
+            button.counter-next {
+              font-size: 12px;
+              font-weight: bold;
+              width: 40px;
+              height: 25px;
+              position: absolute;
+              top: 0;
+              right: 0;
+              border-bottom: 1px solid #eee;
             }
           }
-          button.counter-next {
-            font-size: 12px;
-            font-weight: bold;
-            width: 40px;
-            height: 25px;
-            position: absolute;
-            top: 0;
-            right: 0;
-            border-bottom: 1px solid #eee;
+
+          .cart-button-wrap {
+            width: 150px;
+            height: 50px;
+            border: 1px solid #346aff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+            span {
+              color: #346aff;
+            }
+          }
+
+          .purchase-button-wrap {
+            width: 150px;
+            height: 50px;
+            border: 1px solid #ccc;
+            background-color: #346aff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            span {
+              color: #fff;
+            }
           }
         }
       }

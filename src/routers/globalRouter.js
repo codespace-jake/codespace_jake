@@ -11,6 +11,7 @@ import {
   getLogout,
   getAdminRegister,
   postAdminRegister,
+  getdummy,
 } from "../controllers/globalController";
 
 const globalRouter = express.Router();
@@ -36,3 +37,6 @@ globalRouter.get(routes.logout, getLogout);
 globalRouter.get(routes.adminRegister, getAdminRegister);
 globalRouter.post(routes.adminRegister, postAdminRegister);
 export default globalRouter;
+
+//테스트
+globalRouter.get(routes.dummy, getdummy);

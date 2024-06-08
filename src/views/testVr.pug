@@ -1,0 +1,11 @@
+extends layouts/main
+
+block content
+  iframe#myIframe(frameborder="0" src="https://65574cfd7abbc6110e054aa6--statuesque-dusk-5500ef.netlify.app/")
+  button#openNewWindow(style='border:1px solid #eee; background:#eee', onclick='openNewWindow()') 클릭하기
+
+  script.
+    function openNewWindow() {
+        const myIframe = document.getElementById('myIframe');
+        window.open(myIframe.src, '_blank');
+    }
